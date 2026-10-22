@@ -1,3 +1,3 @@
-# Proyecto
+# Mi Aplicación Web
 
-Repositorio inicial del proyecto.
+Repositorio del proyecto Mi Aplicación Web.
