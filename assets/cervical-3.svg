@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#edfdf4"/>
+      <stop offset="100%" stop-color="#e1f2e8"/>
+    </linearGradient>
+    <filter id="shadow3" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#101e19" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="200" rx="16" fill="url(#bgGrad3)"/>
+  
+  <!-- Eje vertical puro de rotación -->
+  <line x1="160" y1="20" x2="160" y2="180" stroke="#00664b" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+
+  <!-- Hombros nivelados y fijos (clave biomecánica) -->
+  <path d="M100 135 C110 110 135 105 160 105 C185 105 210 110 220 135 Z" fill="#25332d"/>
+  <circle cx="106" cy="120" r="7" fill="#6f7a73"/>
+  <circle cx="214" cy="120" r="7" fill="#6f7a73"/>
+
+  <!-- Tronco sentado -->
+  <path d="M125 135 L125 175 L195 175 L195 135 Z" fill="#25332d" opacity="0.9"/>
+
+  <!-- Cuello centrado -->
+  <rect x="151" y="80" width="18" height="26" rx="4" fill="#101e19"/>
+
+  <!-- Cabeza en rotación axial (girada hacia el lado derecho) -->
+  <g transform="translate(160, 60)" filter="url(#shadow3)">
+    <ellipse cx="0" cy="0" rx="20" ry="24" fill="#101e19"/>
+    <!-- Perfil del giro nasal -->
+    <path d="M12 -4 Q24 0 14 6" fill="none" stroke="#101e19" stroke-width="4" stroke-linecap="round"/>
+    <!-- Oreja visible -->
+    <ellipse cx="-16" cy="2" rx="4" ry="7" fill="#25332d"/>
+    <!-- Músculo esternocleidomastoideo activado -->
+    <path d="M-8 12 Q2 24 6 38" fill="none" stroke="#00664b" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Flecha semicircular de rotación axial (horizontal sin inclinación) -->
+  <path d="M110 50 C125 28 195 28 210 50" fill="none" stroke="#ac5d00" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4,2"/>
+  <polygon points="214,48 213,58 205,52" fill="#ac5d00"/>
+  <polygon points="106,48 107,58 115,52" fill="#ac5d00"/>
+
+  <!-- Badges clínicos -->
+  <g transform="translate(18, 18)">
+    <rect width="128" height="24" rx="12" fill="#ffffff" opacity="0.95" filter="url(#shadow3)"/>
+    <circle cx="14" cy="12" r="5" fill="#00664b"/>
+    <text x="25" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#00664b">Rotación Pura 180°</text>
+  </g>
+
+  <g transform="translate(180, 162)">
+    <rect width="124" height="22" rx="11" fill="#2a7f62" opacity="0.9"/>
+    <text x="62" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="700" fill="#ffffff" text-anchor="middle">Hombros inmóviles</text>
+  </g>
+</svg>

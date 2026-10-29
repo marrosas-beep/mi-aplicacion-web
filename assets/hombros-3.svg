@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradH3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#edfdf4"/>
+      <stop offset="100%" stop-color="#e1f2e8"/>
+    </linearGradient>
+    <filter id="shadowH3" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#101e19" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="200" rx="16" fill="url(#bgGradH3)"/>
+
+  <!-- Línea base de reposo de hombros -->
+  <line x1="80" y1="120" x2="240" y2="120" stroke="#bec9c2" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.6"/>
+  <text x="50" y="123" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" fill="#6f7a73">Reposo</text>
+
+  <!-- Tronco erguido -->
+  <path d="M125 155 C125 105 135 90 160 90 C185 90 195 105 195 155 Z" fill="#25332d"/>
+
+  <!-- Cuello centrado -->
+  <rect x="151" y="70" width="18" height="25" rx="3" fill="#101e19"/>
+  <!-- Cabeza erguida frontal -->
+  <ellipse cx="160" cy="52" rx="18" ry="22" fill="#101e19" filter="url(#shadowH3)"/>
+
+  <!-- Hombros encogidos/elevados hacia las orejas (tensión isométrica 3s) -->
+  <!-- Hombro Izquierdo elevado -->
+  <ellipse cx="120" cy="95" rx="14" ry="11" fill="#00664b"/>
+  <path d="M120 95 L105 145" stroke="#25332d" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Hombro Derecho elevado -->
+  <ellipse cx="200" cy="95" rx="14" ry="11" fill="#00664b"/>
+  <path d="M200 95 L215 145" stroke="#25332d" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Flechas duales: 1. Inhalar y subir, 2. Exhalar y soltar -->
+  <g transform="translate(85, 82)">
+    <line x1="0" y1="30" x2="0" y2="5" stroke="#ac5d00" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="-4,6 0,0 4,6" fill="#ac5d00"/>
+    <text x="-8" y="20" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700" fill="#ac5d00" text-anchor="end">1. Inhala</text>
+  </g>
+
+  <g transform="translate(235, 82)">
+    <line x1="0" y1="5" x2="0" y2="30" stroke="#00664b" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="-4,29 0,35 4,29" fill="#00664b"/>
+    <text x="8" y="20" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700" fill="#00664b">2. Suelta</text>
+  </g>
+
+  <!-- Badges clínicos -->
+  <g transform="translate(18, 18)">
+    <rect width="142" height="24" rx="12" fill="#ffffff" opacity="0.95" filter="url(#shadowH3)"/>
+    <circle cx="14" cy="12" r="5" fill="#00664b"/>
+    <text x="25" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#00664b">Descarga por Gravedad</text>
+  </g>
+
+  <g transform="translate(170, 162)">
+    <rect width="135" height="22" rx="11" fill="#ac5d00" opacity="0.95"/>
+    <text x="67" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="700" fill="#ffffff" text-anchor="middle">Sostén 3s y exhala</text>
+  </g>
+</svg>

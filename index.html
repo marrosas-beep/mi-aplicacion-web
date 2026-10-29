@@ -430,6 +430,15 @@
           </div>
         </div>
 
+        <!-- Ilustración Anatómica Guiada (Función 2) -->
+        <div class="relative w-full rounded-2xl overflow-hidden border border-surface-container bg-surface-container-low shadow-xs">
+          <img id="ejercicioImagen" src="assets/cervical-1.svg" alt="Ilustración anatómica del ejercicio" class="w-full h-44 object-contain mx-auto transition-all duration-300 py-1"/>
+          <div class="absolute bottom-2 right-2 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] font-bold text-primary flex items-center gap-1 shadow-xs border border-surface-container">
+            <span class="material-symbols-outlined text-[13px]">visibility</span>
+            <span>Guía Visual Biomecánica</span>
+          </div>
+        </div>
+
         <!-- Técnica de Ejecución Paso a Paso (Función 2) -->
         <div class="space-y-2 border-t border-surface-container pt-3.5">
           <div class="flex items-center justify-between">
@@ -747,6 +756,7 @@
         titulo: "Flexión Lateral Cervical con Descenso Escapular",
         musculos: "Trapecio Superior y Elevador de la Escápula",
         icono: "airline_seat_recline_normal",
+        imagen: "assets/cervical-1.svg",
         pasos: [
           "Siéntate derecho con la columna alineada. Deja caer suavemente la oreja derecha hacia tu hombro derecho.",
           "Coloca tu mano derecha sobre la cabeza sin jalar, solo permitiendo que el propio peso del brazo asista la inclinación.",
@@ -760,6 +770,7 @@
         titulo: "Retracción Cervical (Doble Mentón / Chin Tuck)",
         musculos: "Flexores Profundos del Cuello y Músculos Suboccipitales",
         icono: "airline_seat_recline_normal",
+        imagen: "assets/cervical-2.svg",
         pasos: [
           "Mantén la mirada al frente a la altura de los ojos con la mandíbula relajada.",
           "Desplaza la cabeza horizontalmente hacia atrás, como guardando el mentón (haciendo un sutil doble mentón).",
@@ -773,6 +784,7 @@
         titulo: "Rotación Axial Cervical con Mirada Fija",
         musculos: "Esternocleidomastoideo y Esplenio del Cuello",
         icono: "airline_seat_recline_normal",
+        imagen: "assets/cervical-3.svg",
         pasos: [
           "Mantén los hombros fijos y desciende la barbilla ligeramente.",
           "Gira lentamente la cabeza hacia la derecha hasta sentir tensión suave y confortable.",
@@ -788,6 +800,7 @@
         titulo: "Apertura Pectoral y Retracción Escapular",
         musculos: "Pectoral Mayor, Pectoral Menor y Romboides",
         icono: "accessibility",
+        imagen: "assets/hombros-1.svg",
         pasos: [
           "Siéntate al borde de la silla. Lleva ambas manos detrás de la nuca o detrás de la zona lumbar.",
           "Abre bien los codos hacia atrás y junta los omóplatos como si intentaras atrapar un lápiz entre ellos.",
@@ -801,6 +814,7 @@
         titulo: "Estiramiento de Flexores de Muñeca (Túnel Carpiano)",
         musculos: "Flexores Superficiales y Profundos de los Dedos",
         icono: "fitness_center",
+        imagen: "assets/hombros-2.svg",
         pasos: [
           "Extiende tu brazo derecho hacia el frente con la palma mirando hacia adelante y los dedos apuntando hacia arriba.",
           "Con la mano izquierda, toma suavemente los dedos derechos y tira hacia tu cuerpo con el codo extendido.",
@@ -814,6 +828,7 @@
         titulo: "Elevación y Descarga Escapular con Respiración",
         musculos: "Fijadores de la Escápula y Trapecios Medios",
         icono: "accessibility",
+        imagen: "assets/hombros-3.svg",
         pasos: [
           "Inhala profundo mientras subes ambos hombros hacia tus orejas con control.",
           "Sostén la tensión muscular máxima durante 3 segundos.",
@@ -829,6 +844,7 @@
         titulo: "Báscula Pélvica y Descompresión Lumbar en Asiento",
         musculos: "Cuadrado Lumbar, Iliopsoas y Erectores Espinales",
         icono: "chair",
+        imagen: "assets/espalda-1.svg",
         pasos: [
           "Apoya los pies planos en el suelo. Coloca las manos en tus muslos.",
           "Rueda sobre tus isquiones hacia atrás curvando suavemente la espalda (retroversión), luego rueda hacia adelante arqueando sutilmente (anteversión).",
@@ -842,6 +858,7 @@
         titulo: "Rotación Torácica con Apoyo en Respaldo",
         musculos: "Músculos Rotadores del Tronco y Fascia Toracolumbar",
         icono: "rotate_right",
+        imagen: "assets/espalda-2.svg",
         pasos: [
           "Siéntate erguido. Gira el tronco hacia tu lado derecho apoyando tu mano izquierda en el muslo derecho.",
           "Toma el respaldo de la silla con la mano derecha para asistir suavemente el giro.",
@@ -855,6 +872,7 @@
         titulo: "Extensión Lumbar y Apertura de Cadera en Silla",
         musculos: "Flexores de Cadera (Psoas) y Extensores Lumbares",
         icono: "chair",
+        imagen: "assets/espalda-3.svg",
         pasos: [
           "Coloca las manos en la parte posterior de tu pelvis.",
           "Lleva los codos hacia atrás y realiza una suave extensión de columna levantando ligeramente el esternón.",
@@ -1073,14 +1091,12 @@
 
       ejercicios.forEach((ej, idx) => {
         const item = document.createElement("div");
-        item.className = "flex items-center justify-between p-3 rounded-xl bg-surface-container-low/70 border border-surface-container text-xs hover:bg-surface-container-low transition-colors";
+        item.className = "flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low/70 border border-surface-container text-xs hover:bg-surface-container-low transition-colors";
         item.innerHTML = `
           <div class="flex items-center gap-3 min-w-0">
-            <span class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center font-bold text-primary text-xs shrink-0">
-              ${idx + 1}
-            </span>
+            <img src="${ej.imagen}" alt="${ej.titulo}" class="w-12 h-9 object-contain rounded-lg bg-surface-container/70 p-0.5 shrink-0 border border-surface-container"/>
             <div class="min-w-0 truncate">
-              <span class="font-bold text-on-surface block truncate text-xs">${ej.titulo}</span>
+              <span class="font-bold text-on-surface block truncate text-xs">${idx + 1}. ${ej.titulo}</span>
               <span class="text-[11px] text-on-surface-variant truncate block">${ej.musculos}</span>
             </div>
           </div>
@@ -1121,11 +1137,13 @@
       document.getElementById("barraProgresoTotal").style.width = `${porcentaje}%`;
       document.getElementById("porcentajeProgreso").innerText = `${porcentaje}%`;
 
-      // FUNCIÓN 2: Ficha del Ejercicio
+      // FUNCIÓN 2: Ficha del Ejercicio e Ilustración Guiada
       document.getElementById("ejercicioTitulo").innerText = ejercicio.titulo;
       document.getElementById("ejercicioMusculos").innerText = ejercicio.musculos;
       document.getElementById("ejercicioIcono").innerText = ejercicio.icono;
       document.getElementById("ejercicioRecomendacion").innerText = ejercicio.recomendacion;
+      document.getElementById("ejercicioImagen").src = ejercicio.imagen;
+      document.getElementById("ejercicioImagen").alt = ejercicio.titulo;
 
       // FUNCIÓN 2: Técnica Paso a Paso
       const pasosContainer = document.getElementById("ejercicioPasos");

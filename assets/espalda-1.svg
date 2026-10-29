@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradE1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#edfdf4"/>
+      <stop offset="100%" stop-color="#e1f2e8"/>
+    </linearGradient>
+    <filter id="shadowE1" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#101e19" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="200" rx="16" fill="url(#bgGradE1)"/>
+  
+  <!-- Silla de perfil (asiento horizontal y respaldo) -->
+  <line x1="85" y1="140" x2="195" y2="140" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+  <line x1="88" y1="65" x2="98" y2="135" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+  <line x1="140" y1="142" x2="140" y2="185" stroke="#64748b" stroke-width="5" stroke-linecap="round"/>
+  <line x1="115" y1="185" x2="165" y2="185" stroke="#64748b" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Muslos y rodillas a 90 grados -->
+  <path d="M140 137 L205 137 L210 180" fill="none" stroke="#25332d" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Pies planos en el suelo -->
+  <line x1="202" y1="182" x2="225" y2="182" stroke="#101e19" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Columna lumbar con arco dinámico de báscula (rehidratación discal) -->
+  <!-- Columna en flexión suave / retroversión -->
+  <path d="M135 135 C118 115 120 90 135 70" fill="none" stroke="#bec9c2" stroke-width="8" stroke-dasharray="3,3"/>
+  <!-- Columna en anteversión / neutra activa -->
+  <path d="M138 135 C146 112 136 88 142 70" fill="none" stroke="#25332d" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Discos L4-L5 y L5-S1 destacados en verde rehidratación -->
+  <circle cx="140" cy="120" r="5" fill="#00664b"/>
+  <circle cx="140" cy="120" r="8" fill="none" stroke="#85d7b5" stroke-width="2"/>
+  <circle cx="138" cy="130" r="5" fill="#00664b"/>
+
+  <!-- Cabeza erguida neutra -->
+  <ellipse cx="145" cy="52" rx="16" ry="19" fill="#101e19" filter="url(#shadowE1)"/>
+
+  <!-- Manos descansando en muslos asistiendo la postura -->
+  <path d="M135 85 L165 110 L185 132" fill="none" stroke="#2a7f62" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="185" cy="132" r="4" fill="#00664b"/>
+
+  <!-- Flechas curvas de basculación pélvica rítmica (isquiones) -->
+  <g transform="translate(105, 125)">
+    <path d="M5 20 C-5 5 5 -10 20 -8" fill="none" stroke="#ac5d00" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="20,-12 25,-7 19,-4" fill="#ac5d00"/>
+    <polygon points="5,23 0,18 6,15" fill="#ac5d00"/>
+    <text x="-12" y="8" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700" fill="#ac5d00">Báscula</text>
+  </g>
+
+  <!-- Badges clínicos -->
+  <g transform="translate(18, 18)">
+    <rect width="138" height="24" rx="12" fill="#ffffff" opacity="0.95" filter="url(#shadowE1)"/>
+    <circle cx="14" cy="12" r="5" fill="#00664b"/>
+    <text x="25" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#00664b">Descompresión L4-S1</text>
+  </g>
+
+  <g transform="translate(170, 162)">
+    <rect width="135" height="22" rx="11" fill="#ac5d00" opacity="0.95"/>
+    <text x="67" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="700" fill="#ffffff" text-anchor="middle">Movimiento suave rítmico</text>
+  </g>
+</svg>
