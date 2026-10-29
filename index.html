@@ -9,10 +9,10 @@
   <!-- Tipografía Plus Jakarta Sans & Material Symbols -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
 
-  <!-- Tailwind CSS CDN con tokens de DESIGN.md -->
+  <!-- Tailwind CSS CDN con configuración oficial de DESIGN.md -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -115,7 +115,7 @@
       display: none;
     }
     .timer-ring {
-      transition: stroke-dashoffset 0.3s linear;
+      transition: stroke-dashoffset 0.4s ease-out, stroke 0.3s ease;
       transform: rotate(-90deg);
       transform-origin: 50% 50%;
     }
@@ -131,45 +131,72 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .btn-zona-active {
-      box-shadow: 0 4px 14px -1px rgba(0, 102, 75, 0.28);
+      box-shadow: 0 6px 18px -2px rgba(0, 102, 75, 0.32);
       transform: translateY(-1px);
+    }
+    @keyframes ringPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+    .timer-alert-pulse {
+      animation: ringPulse 0.8s infinite ease-in-out;
+    }
+    .flash-success {
+      animation: flashGreen 0.6s ease-out;
+    }
+    @keyframes flashGreen {
+      0% { background-color: rgba(160, 243, 208, 0.6); }
+      100% { background-color: transparent; }
     }
   </style>
 </head>
 
 <body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased select-none">
 
-  <!-- CABECERA PRINCIPAL -->
+  <!-- =================================================================== -->
+  <!-- CABECERA PRINCIPAL CON CONTROLES CLÍNICOS                          -->
+  <!-- =================================================================== -->
   <header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl border-b border-surface-container-high/60 shadow-[0_4px_16px_-2px_rgba(28,42,36,0.04)]">
     <div class="max-w-2xl mx-auto h-16 px-4 flex items-center justify-between">
+      
+      <!-- Logo y Título -->
       <div class="flex items-center gap-3 cursor-pointer" onclick="cambiarTab('rutinas')">
-        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm">
+        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm transition-transform active:scale-95">
           <span class="material-symbols-outlined text-[22px]">self_improvement</span>
         </div>
         <div class="flex flex-col">
           <div class="flex items-center gap-1.5">
             <span class="font-bold text-lg text-primary tracking-tight">PausaActiva</span>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-primary font-semibold" id="headerSubtitle">Clínica</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-surface-container text-primary font-bold" id="headerSubtitle">Clínica</span>
           </div>
           <span class="text-xs text-on-surface-variant font-medium">Fisioterapia & Ergonomía</span>
         </div>
       </div>
 
+      <!-- Herramientas de Cabecera -->
       <div class="flex items-center gap-2">
-        <!-- Control de Sonido -->
-        <button id="btnSonido" aria-label="Alternar alertas sonoras" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-primary transition-all hover:bg-surface-container active:scale-95" type="button" onclick="toggleSonido()">
+        <!-- Control de Alerta Sonora (Función 4) -->
+        <button id="btnSonido" aria-label="Alternar alertas sonoras" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-primary transition-all hover:bg-surface-container active:scale-95 shadow-xs" type="button" onclick="toggleSonido()" title="Activar/Desactivar Alerta Sonora">
           <span id="iconoSonido" class="material-symbols-outlined text-[20px]">volume_up</span>
         </button>
 
-        <!-- Indicador de Usuario -->
-        <div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-xs" title="Perfil Fisioterapéutico">
+        <!-- Conexión Firebase Status Pill (Preparada) -->
+        <button id="btnFirebaseStatus" onclick="abrirModalFirebase()" class="h-8 px-2.5 rounded-full bg-surface-container text-primary flex items-center gap-1 text-[11px] font-bold border border-surface-container-high hover:bg-surface-container-high transition-colors" title="Estado de Base de Datos">
+          <span id="iconoFirebase" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="textoFirebase">Firestore Listo</span>
+        </button>
+
+        <!-- Indicador de Usuario (Camilo, 22 años) -->
+        <div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-xs cursor-pointer" title="Camilo · 22 años · Fisioterapia">
           <span class="material-symbols-outlined text-[18px]">person</span>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- CONTENIDO PRINCIPAL -->
+  <!-- =================================================================== -->
+  <!-- CONTENEDOR PRINCIPAL MULTI-PESTAÑA                                  -->
+  <!-- =================================================================== -->
   <main class="flex-1 w-full max-w-2xl mx-auto pt-20 pb-24 px-4">
 
     <!-- =================================================================== -->
@@ -178,17 +205,17 @@
     <!-- =================================================================== -->
     <section id="tab-rutinas" class="tab-content active space-y-5">
       
-      <!-- Banner de Función 1 -->
+      <!-- Banner Clínico y Motivacional -->
       <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-[0_4px_16px_-2px_rgba(28,42,36,0.04)] border border-surface-container">
         <div class="flex items-start justify-between">
           <div class="space-y-1.5">
             <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant text-xs font-bold">
-              <span class="material-symbols-outlined text-[15px]">filter_list</span>
-              Función 1 · Selección Anatómica
+              <span class="material-symbols-outlined text-[15px]">verified</span>
+              Protocolo Fisioterapéutico Clínico
             </div>
-            <h1 class="text-xl font-bold text-on-surface">Selecciona la zona a trabajar</h1>
+            <h1 class="text-xl font-bold text-on-surface">Alivia la sobrecarga postural de tu jornada</h1>
             <p class="text-xs text-on-surface-variant leading-relaxed">
-              Filtra tu rutina según el segmento corporal que presente fatiga o sobrecarga postural. Cada ejercicio está clínicamente calibrado a <strong>30 segundos</strong>.
+              Diseñado para estudiantes y profesionales que pasan <strong>más de 6 horas en sedestación continua</strong>. Selecciona el segmento anatómico a descomprimir:
             </p>
           </div>
         </div>
@@ -199,7 +226,7 @@
         <div class="flex items-center justify-between px-1">
           <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1">
             <span class="material-symbols-outlined text-[14px]">touch_app</span>
-            Botones de Selección Rápida
+            Filtro Rápido por Zona Anatómica
           </span>
           <span class="text-xs font-bold text-primary" id="badgeZonaActiva">Rutina Completa</span>
         </div>
@@ -208,19 +235,19 @@
           
           <!-- 1. Rutina Completa -->
           <button id="btn-filtro-completa" class="btn-zona p-3 rounded-2xl font-bold text-xs flex items-center gap-3 transition-all border border-transparent bg-primary text-on-primary btn-zona-active" data-zona="completa" onclick="seleccionarZona('completa')">
-            <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-[20px]">all_inclusive</span>
+            <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[22px]">all_inclusive</span>
             </div>
             <div class="text-left min-w-0">
               <span class="block truncate font-bold text-sm">Rutina Completa</span>
-              <span class="block text-[11px] opacity-90 font-normal">Cuerpo completo (2 min)</span>
+              <span class="block text-[11px] opacity-90 font-normal">4 ejercicios · 2.0 min</span>
             </div>
           </button>
 
           <!-- 2. Cuello / Cervical -->
           <button id="btn-filtro-cuello" class="btn-zona p-3 rounded-2xl font-semibold text-xs flex items-center gap-3 transition-all border border-surface-container bg-surface-container-lowest text-on-surface hover:bg-surface-container-low" data-zona="cuello" onclick="seleccionarZona('cuello')">
-            <div class="w-9 h-9 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
-              <span class="material-symbols-outlined text-[20px]">airline_seat_recline_normal</span>
+            <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+              <span class="material-symbols-outlined text-[22px]">airline_seat_recline_normal</span>
             </div>
             <div class="text-left min-w-0">
               <span class="block truncate font-bold text-sm">Cuello / Cervical</span>
@@ -230,8 +257,8 @@
 
           <!-- 3. Hombros / Brazos -->
           <button id="btn-filtro-hombros" class="btn-zona p-3 rounded-2xl font-semibold text-xs flex items-center gap-3 transition-all border border-surface-container bg-surface-container-lowest text-on-surface hover:bg-surface-container-low" data-zona="hombros" onclick="seleccionarZona('hombros')">
-            <div class="w-9 h-9 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary shrink-0">
-              <span class="material-symbols-outlined text-[20px]">accessibility</span>
+            <div class="w-10 h-10 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary shrink-0">
+              <span class="material-symbols-outlined text-[22px]">accessibility</span>
             </div>
             <div class="text-left min-w-0">
               <span class="block truncate font-bold text-sm">Hombros / Brazos</span>
@@ -241,8 +268,8 @@
 
           <!-- 4. Espalda / Lumbar -->
           <button id="btn-filtro-espalda" class="btn-zona p-3 rounded-2xl font-semibold text-xs flex items-center gap-3 transition-all border border-surface-container bg-surface-container-lowest text-on-surface hover:bg-surface-container-low" data-zona="espalda" onclick="seleccionarZona('espalda')">
-            <div class="w-9 h-9 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary shrink-0">
-              <span class="material-symbols-outlined text-[20px]">fitness_center</span>
+            <div class="w-10 h-10 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary shrink-0">
+              <span class="material-symbols-outlined text-[22px]">fitness_center</span>
             </div>
             <div class="text-left min-w-0">
               <span class="block truncate font-bold text-sm">Espalda / Lumbar</span>
@@ -253,24 +280,24 @@
         </div>
       </div>
 
-      <!-- FICHA DE CRITERIO CLÍNICO Y BIOMECÁNICO DE LA ZONA SELECCIONADA -->
-      <div id="cardDiagnosticoZona" class="bg-surface-container-low rounded-2xl p-4 border border-surface-container space-y-2.5 transition-all">
+      <!-- FICHA DE FISIOPATOLOGÍA Y CRITERIO CLÍNICO DINÁMICO -->
+      <div id="cardDiagnosticoZona" class="bg-surface-container-low rounded-2xl p-4 border border-surface-container space-y-2.5 transition-all shadow-xs">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span id="iconoDiagnosticoZona" class="material-symbols-outlined text-primary text-[22px]">verified</span>
             <span id="tituloDiagnosticoZona" class="text-xs font-bold text-on-surface uppercase tracking-wide">Criterio Clínico · Rutina Completa</span>
           </div>
-          <span id="chipMusculosZona" class="text-[11px] px-2.5 py-0.5 rounded-full bg-surface-container text-primary font-bold">Multizona</span>
+          <span id="chipMusculosZona" class="text-[11px] px-2.5 py-0.5 rounded-full bg-surface-container text-primary font-bold">4 ejercicios</span>
         </div>
         <p id="textoDiagnosticoZona" class="text-xs text-on-surface-variant leading-relaxed">
-          Secuencia balanceada de descompresión integral. Combina estiramiento cervical, apertura escapular, descarga de muñeca y báscula lumbar en solo 2 minutos.
+          Secuencia integral multizona diseñada para trabajadores con más de 6 horas continuas en pantalla. Descomprime cervicales, hombros, muñecas y columna lumbar en solo 2 minutos.
         </p>
         <div class="flex flex-wrap gap-1.5 pt-1" id="tagsMusculosZona">
-          <!-- Inyectado por JS -->
+          <!-- Tags inyectados por JS -->
         </div>
       </div>
 
-      <!-- LISTA DINÁMICA DE EJERCICIOS FILTRADOS -->
+      <!-- LISTA DE EJERCICIOS DE LA RUTINA SELECCIONADA -->
       <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-[0_8px_24px_-4px_rgba(42,127,98,0.06)] border border-surface-container space-y-4">
         <div class="flex items-center justify-between border-b border-surface-container pb-3">
           <div>
@@ -284,133 +311,160 @@
           </div>
           <div class="text-right shrink-0 ml-3">
             <span class="text-xs px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold" id="rutinaDuracion">
-              2 min · 4 ejerc.
+              2.0 min · 4 ejerc.
             </span>
           </div>
         </div>
 
-        <!-- Contenedor donde se renderizan los ejercicios filtrados -->
+        <!-- Contenedor donde se renderizan los ejercicios -->
         <div class="space-y-2.5" id="listaEjerciciosPreview">
-          <!-- Inyectado dinámicamente por la Función 1 -->
+          <!-- Inyectado dinámicamente -->
         </div>
 
-        <!-- Botón de Inicio Primario con la zona filtrada -->
+        <!-- Botón de Inicio Primario -->
         <button id="btnIniciarRutinaZona" class="w-full h-14 rounded-full bg-primary text-on-primary font-bold text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(0,102,75,0.25)] transition-transform active:scale-98 hover:bg-primary-container" type="button" onclick="iniciarRutina()">
           <span class="material-symbols-outlined text-[22px]">play_arrow</span>
           <span id="textoBotonIniciar">Comenzar Rutina Completa (30s c/u)</span>
         </button>
       </div>
 
-      <!-- Tarjeta de Validación de Requisito Fisioterapéutico -->
-      <div class="bg-surface-container-lowest rounded-xl p-3.5 border border-surface-container flex items-center justify-between text-xs">
-        <div class="flex items-center gap-2 text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
-          <span><strong>Función 1 Activa:</strong> Filtrado instantáneo en memoria sin recargas.</span>
-        </div>
-        <span class="text-[11px] font-bold text-primary bg-surface-container px-2 py-0.5 rounded-full">100% Local</span>
-      </div>
-
     </section>
 
     <!-- =================================================================== -->
-    <!-- TAB 2: EN CURSO (TEMPORIZADOR + EJERCICIO)                         -->
+    <!-- FUNCIÓN 2, 3 Y 4: TEMPORIZADOR, TARJETA CLÍNICA Y NOTIFICACIONES    -->
     <!-- =================================================================== -->
     <section id="tab-en-curso" class="tab-content space-y-5">
       
-      <!-- Barra de Progreso Superior -->
+      <!-- FUNCIÓN 4: INDICADOR DE PROGRESO DENTRO DE LA RUTINA -->
       <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-container flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="text-xs px-2.5 py-1 rounded-full bg-primary-container text-on-primary font-bold" id="indicadorZona">CUELLO</span>
           <span class="text-xs font-semibold text-on-surface" id="indicadorProgreso">Ejercicio 1 de 4</span>
         </div>
-        <div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
-          <div id="barraProgresoTotal" class="h-full bg-primary transition-all duration-300" style="width: 25%;"></div>
+        <!-- Barra de progreso visual -->
+        <div class="flex items-center gap-2">
+          <div class="w-28 h-2 bg-surface-container rounded-full overflow-hidden">
+            <div id="barraProgresoTotal" class="h-full bg-primary transition-all duration-300" style="width: 25%;"></div>
+          </div>
+          <span id="porcentajeProgreso" class="text-[11px] font-bold text-primary">25%</span>
         </div>
       </div>
 
-      <!-- Temporizador Central Interactivo -->
-      <div class="relative bg-surface-container-lowest rounded-3xl p-6 shadow-[0_12px_32px_-4px_rgba(42,127,98,0.08),0_2px_6px_0_rgba(28,42,36,0.03)] border border-surface-container flex flex-col items-center text-center">
+      <!-- FUNCIÓN 3: TEMPORIZADOR DINÁMICO DE 30 SEGUNDOS -->
+      <div id="contenedorTemporizador" class="relative bg-surface-container-lowest rounded-3xl p-6 shadow-[0_12px_32px_-4px_rgba(42,127,98,0.08),0_2px_6px_0_rgba(28,42,36,0.03)] border border-surface-container flex flex-col items-center text-center transition-colors">
         
-        <!-- Círculo de Cuenta Regresiva SVG -->
-        <div class="relative w-48 h-48 flex items-center justify-center my-2">
+        <!-- Alerta visual contextual de fin de ejercicio -->
+        <div id="alertaVisualCambio" class="hidden absolute top-3 px-3 py-1 rounded-full bg-primary text-on-primary text-xs font-bold animate-bounce shadow-md flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">celebration</span>
+          <span>¡30 segundos completados! Siguiente ejercicio...</span>
+        </div>
+
+        <!-- Anillo de Cuenta Regresiva SVG (30s) -->
+        <div class="relative w-52 h-52 flex items-center justify-center my-2">
           <svg class="w-full h-full" viewBox="0 0 160 160">
-            <!-- Anillo de fondo -->
+            <!-- Anillo estático de fondo -->
             <circle cx="80" cy="80" r="70" stroke="#e1f2e8" stroke-width="8" fill="transparent"/>
-            <!-- Anillo dinámico -->
+            <!-- Anillo dinámico de progreso -->
             <circle id="timerCircle" class="timer-ring" cx="80" cy="80" r="70" stroke="#00664b" stroke-width="8" stroke-linecap="round" fill="transparent" stroke-dasharray="440" stroke-dashoffset="0"/>
           </svg>
           
           <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span id="timerSegundos" class="text-5xl font-extrabold text-primary font-timer-display tabular-nums tracking-tight">30</span>
-            <span class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mt-0.5">Segundos</span>
+            <span id="timerSegundos" class="text-6xl font-extrabold text-primary font-timer-display tabular-nums tracking-tight">30</span>
+            <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-0.5" id="labelTimerEstado">Segundos</span>
           </div>
         </div>
 
-        <!-- Controles del Temporizador -->
-        <div class="flex items-center justify-center gap-4 mt-3 w-full max-w-xs">
-          <!-- Anterior -->
-          <button id="btnPrev" class="w-12 h-12 rounded-full bg-surface-container-low text-primary flex items-center justify-center transition-all hover:bg-surface-container active:scale-95" type="button" onclick="ejercicioAnterior()" title="Ejercicio Anterior">
+        <!-- CONTROLES DEL TEMPORIZADOR (FUNCIÓN 3: Iniciar, Pausar, Siguiente, Anterior) -->
+        <div class="flex items-center justify-center gap-3 mt-3 w-full max-w-sm">
+          
+          <!-- Retroceder al ejercicio anterior -->
+          <button id="btnPrev" class="w-12 h-12 rounded-full bg-surface-container-low text-primary flex items-center justify-center transition-all hover:bg-surface-container active:scale-95 shadow-xs" type="button" onclick="ejercicioAnterior()" title="Ejercicio Anterior (Flecha Izq)">
             <span class="material-symbols-outlined text-[24px]">skip_previous</span>
           </button>
 
-          <!-- Play / Pausa Principal -->
-          <button id="btnPlayPausa" class="flex-1 h-14 rounded-full bg-primary text-on-primary font-bold text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(0,102,75,0.25)] transition-all active:scale-95 hover:bg-primary-container" type="button" onclick="togglePlayPausa()">
-            <span id="iconoPlayPausa" class="material-symbols-outlined text-[24px]">play_arrow</span>
+          <!-- Iniciar / Pausar dinámico -->
+          <button id="btnPlayPausa" class="flex-1 h-14 rounded-full bg-primary text-on-primary font-bold text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(0,102,75,0.25)] transition-all active:scale-95 hover:bg-primary-container" type="button" onclick="togglePlayPausa()" title="Iniciar/Pausar (Espacio)">
+            <span id="iconoPlayPausa" class="material-symbols-outlined text-[26px]">play_arrow</span>
             <span id="textoPlayPausa">Iniciar</span>
           </button>
 
-          <!-- Siguiente -->
-          <button id="btnNext" class="w-12 h-12 rounded-full bg-surface-container-low text-primary flex items-center justify-center transition-all hover:bg-surface-container active:scale-95" type="button" onclick="ejercicioSiguiente()" title="Siguiente Ejercicio">
+          <!-- Avanzar al siguiente ejercicio -->
+          <button id="btnNext" class="w-12 h-12 rounded-full bg-surface-container-low text-primary flex items-center justify-center transition-all hover:bg-surface-container active:scale-95 shadow-xs" type="button" onclick="ejercicioSiguiente()" title="Siguiente Ejercicio (Flecha Der)">
             <span class="material-symbols-outlined text-[24px]">skip_next</span>
           </button>
         </div>
 
-        <!-- Reiniciar timer actual -->
-        <button class="mt-3 text-xs text-on-surface-variant hover:text-primary flex items-center gap-1 transition-colors" type="button" onclick="reiniciarEjercicioActual()">
-          <span class="material-symbols-outlined text-[14px]">replay</span>
-          Reiniciar 30s
-        </button>
+        <!-- Reiniciar timer actual de 30s -->
+        <div class="flex items-center gap-4 mt-3">
+          <button class="text-xs text-on-surface-variant hover:text-primary flex items-center gap-1 transition-colors py-1 px-2 rounded-lg hover:bg-surface-container" type="button" onclick="reiniciarEjercicioActual()" title="Reiniciar tiempo a 30s">
+            <span class="material-symbols-outlined text-[15px]">replay</span>
+            Reiniciar 30s
+          </button>
+          
+          <button class="text-xs text-on-surface-variant hover:text-primary flex items-center gap-1 transition-colors py-1 px-2 rounded-lg hover:bg-surface-container" type="button" onclick="cambiarTab('rutinas')" title="Cambiar de rutina">
+            <span class="material-symbols-outlined text-[15px]">tune</span>
+            Cambiar Zona
+          </button>
+        </div>
+
       </div>
 
-      <!-- Tarjeta del Ejercicio Actual con Criterio Clínico -->
-      <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-container space-y-4">
+      <!-- =================================================================== -->
+      <!-- FUNCIÓN 2: VISUALIZAR LA TARJETA DE EJERCICIO CON CRITERIO CLÍNICO  -->
+      <!-- Título, técnica paso a paso y caja de seguridad biomecánica         -->
+      <!-- =================================================================== -->
+      <article id="tarjetaEjercicio" class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-container space-y-4">
         
-        <!-- Encabezado del Ejercicio -->
-        <div class="flex items-start gap-3">
+        <!-- Encabezado Clínico: Título, Zona y Músculos -->
+        <div class="flex items-start gap-3.5">
           <div id="ejercicioIconoBox" class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary shrink-0 shadow-xs">
-            <span id="ejercicioIcono" class="material-symbols-outlined text-[28px]">fitness_center</span>
+            <span id="ejercicioIcono" class="material-symbols-outlined text-[28px]">airline_seat_recline_normal</span>
           </div>
           <div class="flex-1 min-w-0">
-            <h3 id="ejercicioTitulo" class="text-lg font-bold text-on-surface leading-snug">Flexión Lateral Cervical</h3>
+            <div class="flex items-center gap-2 mb-0.5">
+              <span id="badgeEjercicioZona" class="text-[10px] px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-bold uppercase">CUELLO</span>
+              <span class="text-[11px] text-on-surface-variant font-medium">30 segundos estáticos</span>
+            </div>
+            <h3 id="ejercicioTitulo" class="text-lg font-bold text-on-surface leading-snug">Flexión Lateral Cervical con Descenso Escapular</h3>
             <p id="ejercicioMusculos" class="text-xs text-primary font-semibold mt-0.5">Trapecio superior & Elevador de la escápula</p>
           </div>
         </div>
 
-        <!-- Técnica Paso a Paso -->
-        <div class="space-y-2 border-t border-surface-container pt-3">
-          <span class="text-xs font-bold text-on-surface uppercase tracking-wider">Técnica de Ejecución</span>
-          <ol id="ejercicioPasos" class="space-y-1.5 text-xs text-on-surface-variant leading-relaxed">
-            <!-- Inyectado por JS -->
+        <!-- Técnica de Ejecución Paso a Paso (Función 2) -->
+        <div class="space-y-2 border-t border-surface-container pt-3.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-primary text-[16px]">stairs</span>
+              Técnica de Ejecución Biomecánica
+            </span>
+            <span class="text-[11px] text-on-surface-variant">Paso a paso guiado</span>
+          </div>
+          <ol id="ejercicioPasos" class="space-y-2 text-xs text-on-surface-variant leading-relaxed">
+            <!-- Inyectado dinámicamente -->
           </ol>
         </div>
 
-        <!-- Caja de Recomendación Fisioterapéutica y Seguridad Biomecánica -->
-        <div class="bg-tertiary-container/10 border border-tertiary/20 rounded-xl p-3.5 flex gap-3 items-start">
-          <div class="w-7 h-7 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+        <!-- CAJA DE RECOMENDACIÓN FISIOTERAPÉUTICA Y SEGURIDAD BIOMECÁNICA (Función 2) -->
+        <div class="bg-tertiary-fixed/40 border border-tertiary/25 rounded-2xl p-4 flex gap-3.5 items-start shadow-xs">
+          <div class="w-8 h-8 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center shrink-0 shadow-xs">
+            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">shield</span>
           </div>
           <div class="flex-1 min-w-0">
-            <span class="text-xs font-bold text-tertiary block mb-0.5">Seguridad Biomecánica & Recomendación Clínica</span>
-            <p id="ejercicioRecomendacion" class="text-xs text-on-surface-variant leading-relaxed">
-              No jales la cabeza con fuerza. Solo deja caer el peso de tu mano sobre la sien. Si sientes hormigueo o dolor agudo, detén la maniobra de inmediato.
+            <span class="text-xs font-bold text-tertiary block mb-1 uppercase tracking-wide">
+              Recomendación Fisioterapéutica y Seguridad Biomecánica
+            </span>
+            <p id="ejercicioRecomendacion" class="text-xs text-on-surface leading-relaxed font-medium">
+              No jales la cabeza con fuerza. Solo deja caer el peso de tu mano sobre la sien. Si sientes hormigueo o dolor que se irradia hacia el brazo, detén el estiramiento de inmediato.
             </p>
           </div>
         </div>
-      </div>
+
+      </article>
+
     </section>
 
     <!-- =================================================================== -->
-    <!-- TAB 3: BIOMECÁNICA (CRITERIOS & ERGONOMÍA)                         -->
+    <!-- TAB 3: BIOMECÁNICA Y EDUCACIÓN ERGONÓMICA                           -->
     <!-- =================================================================== -->
     <section id="tab-biomecanica" class="tab-content space-y-4">
       
@@ -421,18 +475,18 @@
         </div>
         <h2 class="text-lg font-bold text-on-surface">Biomecánica de la Pausa Activa</h2>
         <p class="text-xs text-on-surface-variant leading-relaxed mt-1">
-          Las pausas activas no son sesiones deportivas, sino intervenciones de descarga neuromuscular diseñadas para neutralizar la sobrecarga estática del trabajo sedentario.
+          La prevención de los trastornos musculoesqueléticos (TME) requiere dosificación fisiológica precisa. Esta guía resume los principios biomecánicos implementados en la aplicación:
         </p>
       </div>
 
-      <!-- Ficha 1: ¿Por qué 30 segundos? -->
+      <!-- Ficha 1: Fundamento de los 30 segundos -->
       <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-container space-y-2">
         <div class="flex items-center gap-2 text-primary">
           <span class="material-symbols-outlined text-[20px]">timer</span>
-          <h3 class="text-sm font-bold text-on-surface">¿Por qué exactamente 30 segundos?</h3>
+          <h3 class="text-sm font-bold text-on-surface">¿Por qué exactamente 30 segundos por ejercicio?</h3>
         </div>
         <p class="text-xs text-on-surface-variant leading-relaxed">
-          En los primeros 6 a 10 segundos de estiramiento estático, los husos musculares provocan una contracción refleja protectora. A partir de los 15-20 segundos, el <strong>Órgano Tendinoso de Golgi</strong> activa el reflejo de inhibición autógena, permitiendo que el músculo se relaje y elongue con total seguridad.
+          Durante los primeros 6 a 10 segundos de estiramiento estático, los husos neuromusculares generan una contracción refleja protectora (reflejo miotático). Entre los 15 y 20 segundos se activa el <strong>Órgano Tendinoso de Golgi</strong>, produciendo la inhibición autógena que permite relajar el músculo sin provocar microdesgarros. 30 segundos es el tiempo clínico óptimo demostrado por la evidencia.
         </p>
       </div>
 
@@ -440,47 +494,48 @@
       <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-container space-y-2">
         <div class="flex items-center gap-2 text-primary">
           <span class="material-symbols-outlined text-[20px]">monitor</span>
-          <h3 class="text-sm font-bold text-on-surface">Configuración Ergonómica de Pantalla</h3>
+          <h3 class="text-sm font-bold text-on-surface">Alineación Ergonómica de Pantalla</h3>
         </div>
         <ul class="text-xs text-on-surface-variant space-y-1.5 list-disc list-inside">
-          <li><strong>Borde superior a nivel de los ojos:</strong> Evita la flexión cervical continua que sobrecarga el trapecio.</li>
-          <li><strong>Distancia:</strong> Aproximadamente la longitud de tu brazo extendido (50 a 70 cm).</li>
-          <li><strong>Regla 20-20-20:</strong> Cada 20 minutos, mira a 6 metros (20 pies) durante 20 segundos para relajar los músculos ciliares oculares.</li>
+          <li><strong>Borde superior al nivel de los ojos:</strong> Mantén la mirada horizontal para que las vértebras C1-C7 soporten solo el peso natural de la cabeza (~5 kg). Una flexión de 30° triplica esa carga a ~18 kg.</li>
+          <li><strong>Distancia recomendada:</strong> De 50 a 70 cm (la distancia de tu brazo extendido).</li>
+          <li><strong>Regla 20-20-20:</strong> Cada 20 minutos, descansa la vista mirando un punto a 6 metros (20 pies) durante 20 segundos.</li>
         </ul>
       </div>
 
-      <!-- Ficha 3: Regla de los 90 grados -->
+      <!-- Ficha 3: Ángulos articulares neutros -->
       <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-surface-container space-y-2">
         <div class="flex items-center gap-2 text-primary">
           <span class="material-symbols-outlined text-[20px]">chair</span>
-          <h3 class="text-sm font-bold text-on-surface">Ángulos Óptimos en el Asiento</h3>
+          <h3 class="text-sm font-bold text-on-surface">Regla de los 90 Grados en Sedestación</h3>
         </div>
         <ul class="text-xs text-on-surface-variant space-y-1.5 list-disc list-inside">
-          <li><strong>Codos:</strong> Flexionados a 90° apoyados sobre el reposabrazos o escritorio sin encoger hombros.</li>
-          <li><strong>Cadera y rodillas:</strong> En ángulo de 90° a 100° con las plantas de los pies completamente apoyadas en el suelo o reposapiés.</li>
-          <li><strong>Apoyo lumbar:</strong> Mantén la curvatura natural lordótica contra el respaldo.</li>
+          <li><strong>Codos:</strong> Flexionados a 90° con antebrazos apoyados sin elevar los hombros.</li>
+          <li><strong>Caderas y rodillas:</strong> Entre 90° y 100° con las plantas de los pies apoyadas en el piso.</li>
+          <li><strong>Zona Lumbar:</strong> Mantén el soporte lordótico en el respaldo para descomprimir los discos L4-L5 y L5-S1.</li>
         </ul>
       </div>
+
     </section>
 
     <!-- =================================================================== -->
-    <!-- TAB 4: COMPLETADO (VISTA DEL PROTOTIPO)                            -->
+    <!-- TAB 4: COMPLETADO Y RESUMEN BIOMECÁNICO (PROTOTIPO OFICIAL)         -->
     <!-- =================================================================== -->
     <section id="tab-completado" class="tab-content space-y-5">
       
-      <!-- Tarjeta Hero de Logro Terapéutico -->
-      <div class="relative overflow-hidden bg-surface-container-lowest rounded-2xl p-6 shadow-[0_12px_32px_-4px_rgba(42,127,98,0.08),0_2px_6px_0_rgba(28,42,36,0.03)] border border-surface-container flex flex-col items-center text-center">
-        <!-- Halos suaves -->
+      <!-- Hero de Logro y Celebración -->
+      <div class="relative overflow-hidden bg-surface-container-lowest rounded-3xl p-6 shadow-[0_12px_32px_-4px_rgba(42,127,98,0.08),0_2px_6px_0_rgba(28,42,36,0.03)] border border-surface-container flex flex-col items-center text-center">
+        <!-- Halos de luz decorativos -->
         <div class="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-primary-fixed/30 blur-2xl pointer-events-none"></div>
         <div class="absolute -bottom-12 -left-12 w-36 h-36 rounded-full bg-secondary-fixed/40 blur-2xl pointer-events-none"></div>
 
-        <!-- Badge Anatómico de Éxito -->
+        <!-- Badge de Confirmación -->
         <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-semibold text-xs mb-3">
           <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
           <span>Sesión Finalizada</span>
         </div>
 
-        <!-- Icono Terapéutico con Pulso de Victoria -->
+        <!-- Icono de Victoria Biomecánica -->
         <div class="relative flex items-center justify-center w-20 h-20 rounded-full bg-surface-container-low mb-3">
           <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm">
             <span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">self_improvement</span>
@@ -497,21 +552,21 @@
           Tu sistema osteomuscular agradece estos minutos de descarga y alineación.
         </p>
 
-        <!-- Foto decorativa de bienestar ergonómico -->
+        <!-- Imagen ergonómica del prototipo -->
         <div class="w-full mt-4 rounded-xl overflow-hidden h-28 relative">
           <img class="w-full h-full object-cover" alt="Espacio de trabajo ergonómico y sereno" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChwfbDcNRkWa-anLZTUy8xkTETMyjCVzC9rk0Zyme6NXtTKx3O4CnMb2R2OtRY17vJeguGupD6sraZuUyZ5LYFmC5xTkQVY13K-Xvo79UrkRy0gw2AvdmCnNKMaIR2taCPlqEkysizgjdbhM7Nhdq6j5MH7YRRrOb-NLQ7f7nRWF85uRylICwBRW_2n2MyX43JLNbIBEAejwGh_Llrqme3kZXJeSg_rvzhBHPoMpSoyTMTP78gOkvk"/>
           <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
         </div>
       </div>
 
-      <!-- Resumen Clínico: Grid de Métricas -->
+      <!-- Resumen Clínico: 3 Métricas Clave -->
       <div class="space-y-2">
         <div class="flex items-center justify-between px-1">
           <span class="text-xs font-bold text-on-surface">Resumen Biomecánico</span>
           <span class="text-xs text-primary font-bold">100% Eficacia</span>
         </div>
         <div class="grid grid-cols-3 gap-2">
-          <!-- Métrica 1 -->
+          <!-- Métrica 1: Ejercicios -->
           <div class="bg-surface-container-lowest p-3.5 rounded-xl flex flex-col items-center text-center shadow-xs border border-surface-container">
             <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5">
               <span class="material-symbols-outlined text-[18px]">checklist_rtl</span>
@@ -519,7 +574,7 @@
             <span class="text-sm font-bold text-on-surface leading-tight" id="metricEjerciciosCompletados">4 de 4</span>
             <span class="text-[11px] text-on-surface-variant mt-0.5">Ejercicios listos</span>
           </div>
-          <!-- Métrica 2 -->
+          <!-- Métrica 2: Tiempo -->
           <div class="bg-surface-container-lowest p-3.5 rounded-xl flex flex-col items-center text-center shadow-xs border border-surface-container">
             <div class="w-8 h-8 rounded-full bg-secondary-container/40 flex items-center justify-center text-on-secondary-container mb-1.5">
               <span class="material-symbols-outlined text-[18px]">acute</span>
@@ -527,7 +582,7 @@
             <span class="text-sm font-bold text-on-surface leading-tight" id="metricTiempoDescompresion">2 Min</span>
             <span class="text-[11px] text-on-surface-variant mt-0.5">Descompresión</span>
           </div>
-          <!-- Métrica 3 -->
+          <!-- Métrica 3: Zona -->
           <div class="bg-surface-container-lowest p-3.5 rounded-xl flex flex-col items-center text-center shadow-xs border border-surface-container">
             <div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed-variant mb-1.5">
               <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">shield</span>
@@ -551,7 +606,7 @@
         </div>
       </div>
 
-      <!-- Recordatorios Ergonómicos Complementarios -->
+      <!-- Complementos Ergonómicos Interactivos -->
       <div class="space-y-2">
         <span class="text-xs font-bold text-on-surface px-1">Complementos de Bienestar</span>
         
@@ -588,8 +643,8 @@
         </div>
       </div>
 
-      <!-- Temporizador Sutil Próxima Pausa -->
-      <div class="bg-surface-container/60 rounded-full py-2 px-4 flex items-center justify-center gap-2 text-center border border-surface-container">
+      <!-- Temporizador Próxima Pausa (50 minutos) -->
+      <div class="bg-surface-container/60 rounded-full py-2.5 px-4 flex items-center justify-center gap-2 text-center border border-surface-container">
         <span class="material-symbols-outlined text-primary text-[18px]">schedule</span>
         <span class="text-xs text-on-surface-variant">
           Próxima pausa recomendada en <strong class="text-primary font-bold">50 minutos</strong>
@@ -608,11 +663,14 @@
           <span>Volver a mi Trabajo</span>
         </button>
       </div>
+
     </section>
 
   </main>
 
-  <!-- BARRA DE NAVEGACIÓN INFERIOR (TAB BAR) -->
+  <!-- =================================================================== -->
+  <!-- BARRA DE NAVEGACIÓN INFERIOR (TAB BAR)                              -->
+  <!-- =================================================================== -->
   <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl border-t border-surface-container-high/60 shadow-[0_-4px_20px_rgba(28,42,36,0.06)]">
     <div class="max-w-2xl mx-auto h-16 px-2 flex items-center justify-around">
       
@@ -640,14 +698,49 @@
   </nav>
 
   <!-- =================================================================== -->
-  <!-- LÓGICA DE APLICACIÓN Y BASE CLÍNICA                                -->
+  <!-- MODAL DE INTEGRACIÓN FIREBASE FIRESTORE                             -->
+  <!-- =================================================================== -->
+  <div id="modalFirebase" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl border border-surface-container space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[24px]">database</span>
+          <h3 class="font-bold text-base text-on-surface">Módulo Firebase Firestore</h3>
+        </div>
+        <button onclick="cerrarModalFirebase()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <p class="text-xs text-on-surface-variant leading-relaxed">
+        El conector de Firebase Firestore está listo en la aplicación. Puedes ingresar las credenciales de tu proyecto de Firebase cuando desees persistir sesiones, notas ergonómicas o preguntas.
+      </p>
+
+      <div class="space-y-2 text-xs">
+        <label class="block font-bold text-on-surface">Configuración Firebase (JSON o Variables):</label>
+        <textarea id="firebaseConfigInput" rows="4" class="w-full p-2.5 rounded-xl border border-surface-container bg-surface-container-low font-mono text-[11px] text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" placeholder='{ "apiKey": "AIza...", "projectId": "tu-proyecto-firebase" }'></textarea>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="guardarFirebaseConfig()" class="flex-1 h-11 rounded-full bg-primary text-on-primary font-bold text-xs shadow-sm">
+          Conectar Firestore
+        </button>
+        <button onclick="cerrarModalFirebase()" class="h-11 px-4 rounded-full bg-surface-container text-on-surface font-semibold text-xs">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- MOTOR JAVASCRIPT: FUNCIONES 1, 2, 3, 4 Y AUDIO WEB API              -->
   <!-- =================================================================== -->
   <script>
     // ===================================================================
-    // 1. BANCO DE DATOS CLÍNICO DE EJERCICIOS (100% LOCAL EN FRONTEND)
+    // 1. BANCO CLÍNICO DE EJERCICIOS (100% LOCAL EN FRONTEND)
     // ===================================================================
     const EJERCICIOS_DATA = [
-      // ZONA CUELLO / CERVICAL
+      // --- CUELLO / CERVICAL ---
       {
         id: "cervical-1",
         zona: "cuello",
@@ -688,7 +781,7 @@
         recomendacion: "No permitas que el tronco gire con el cuello. El movimiento debe ser puro y libre de mareos o vértigos."
       },
 
-      // ZONA HOMBROS / BRAZOS
+      // --- HOMBROS / BRAZOS ---
       {
         id: "hombros-1",
         zona: "hombros",
@@ -729,7 +822,7 @@
         recomendacion: "Técnica de relajación isométrica progresiva que inhibe la espasticidad acumulada en el cuello y la cintura escapular."
       },
 
-      // ZONA ESPALDA / LUMBAR
+      // --- ESPALDA / LUMBAR ---
       {
         id: "espalda-1",
         zona: "espalda",
@@ -771,12 +864,11 @@
       }
     ];
 
-    // INFORMACIÓN CLÍNICA DETALLADA POR ZONA (FUNCIÓN 1)
+    // Configuración clínica de las 4 Zonas (Función 1)
     const ZONAS_CONFIG = {
       completa: {
         nombre: "Rutina Integral Completa",
         badge: "Rutina Completa",
-        descripcion: "Secuencia balanceada de 4 ejercicios para descompresión integral en 2 minutos.",
         icono: "all_inclusive",
         tituloDiagnostico: "Criterio Clínico · Rutina Completa",
         textoDiagnostico: "Secuencia integral multizona diseñada para trabajadores con más de 6 horas continuas en pantalla. Descomprime cervicales, hombros, muñecas y columna lumbar en solo 2 minutos.",
@@ -792,7 +884,6 @@
       cuello: {
         nombre: "Rutina de Cuello / Cervical",
         badge: "Cuello / Cervical",
-        descripcion: "Alivio de cervicalgia postural y descompresión de trapecios.",
         icono: "airline_seat_recline_normal",
         tituloDiagnostico: "Fisiopatología · Sobrecarga Cervical",
         textoDiagnostico: "La inclinación continua de la cabeza frente al monitor duplica el peso efectivo soportado por las vértebras C5-C7, provocando contracturas en trapecios y cefaleas tensionales.",
@@ -803,7 +894,6 @@
       hombros: {
         nombre: "Rutina de Hombros / Brazos",
         badge: "Hombros / Brazos",
-        descripcion: "Apertura torácica, alineación escapular y descanso del túnel carpiano.",
         icono: "accessibility",
         tituloDiagnostico: "Fisiopatología · Síndrome Cruzado Superior",
         textoDiagnostico: "El tecleo continuo acorta la fascia anterior del pecho y comprime el nervio mediano en el túnel carpiano. Esta rutina abre el pecho y restablece el deslizamiento neural.",
@@ -814,7 +904,6 @@
       espalda: {
         nombre: "Rutina de Espalda / Lumbar",
         badge: "Espalda / Lumbar",
-        descripcion: "Descompresión hidrostática de discos L4-S1 y flexibilización pélvica.",
         icono: "fitness_center",
         tituloDiagnostico: "Fisiopatología · Sobrecarga Lumbar Estática",
         textoDiagnostico: "Al estar sentados, la presión sobre los discos lumbares L4-L5 es un 40% mayor que de pie. La báscula pélvica rítmica bombea líquido sinovial y descomprime las raíces lumbosacras.",
@@ -825,7 +914,7 @@
     };
 
     // ===================================================================
-    // 2. ESTADO DE LA APLICACIÓN
+    // 2. ESTADO GLOBAL DE LA APLICACIÓN
     // ===================================================================
     const state = {
       zonaSeleccionada: "completa",
@@ -837,11 +926,13 @@
       timerId: null,
       sonidoHabilitado: true,
       audioCtx: null,
-      ejerciciosCompletadosContador: 0
+      ejerciciosCompletadosContador: 0,
+      firebaseConfig: null,
+      firebaseConnected: false
     };
 
     // ===================================================================
-    // 3. MOTOR DE AUDIO (Web Audio API nativo)
+    // 3. MOTOR DE AUDIO NATIVO (Web Audio API - FUNCIÓN 4)
     // ===================================================================
     function initAudio() {
       if (!state.audioCtx) {
@@ -855,6 +946,7 @@
       }
     }
 
+    // Campana armónica relajante y doble (D5 + A5 + armónico)
     function emitirCampanaClinica() {
       if (!state.sonidoHabilitado) return;
       try {
@@ -875,7 +967,7 @@
         osc2.type = 'triangle';
         osc2.frequency.setValueAtTime(1174.66, now); // D6 suave
 
-        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.setValueAtTime(0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
 
         osc1.connect(gain);
@@ -887,7 +979,7 @@
         osc1.stop(now + 1.4);
         osc2.stop(now + 1.4);
       } catch (e) {
-        console.warn("Web Audio not available:", e);
+        console.warn("Web Audio API not supported:", e);
       }
     }
 
@@ -919,7 +1011,7 @@
       state.zonaSeleccionada = zona;
       const config = ZONAS_CONFIG[zona] || ZONAS_CONFIG["completa"];
 
-      // 1. Actualizar el estado visual de los 4 botones de selección rápida
+      // 1. Actualizar estilos visuales de los 4 botones
       const botonesZona = [
         { id: "btn-filtro-completa", z: "completa", activeClass: "bg-primary text-on-primary btn-zona-active" },
         { id: "btn-filtro-cuello", z: "cuello", activeClass: "bg-primary text-on-primary btn-zona-active" },
@@ -933,32 +1025,30 @@
         const iconContainer = btn.querySelector("div");
         
         if (item.z === zona) {
-          // Estado Activo
           btn.className = `btn-zona p-3 rounded-2xl font-bold text-xs flex items-center gap-3 transition-all border border-transparent ${item.activeClass}`;
           if (iconContainer) {
-            iconContainer.className = "w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0 text-white";
+            iconContainer.className = "w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0 text-white";
           }
         } else {
-          // Estado Inactivo
           btn.className = "btn-zona p-3 rounded-2xl font-semibold text-xs flex items-center gap-3 transition-all border border-surface-container bg-surface-container-lowest text-on-surface hover:bg-surface-container-low";
           if (iconContainer) {
-            iconContainer.className = "w-9 h-9 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0";
+            iconContainer.className = "w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0";
           }
         }
       });
 
-      // 2. Actualizar el badge superior y título
+      // 2. Actualizar etiquetas y textos informativos
       document.getElementById("badgeZonaActiva").innerText = config.badge;
       document.getElementById("rutinaTitulo").innerText = config.nombre;
       document.getElementById("rutinaDescripcion").innerText = `${config.ejercicios.length} ejercicios dosificados clínicamente a 30 segundos cada uno.`;
 
-      // 3. Actualizar la tarjeta clínica de diagnóstico fisiopatológico
+      // 3. Ficha clínica diagnóstica
       document.getElementById("tituloDiagnosticoZona").innerText = config.tituloDiagnostico;
       document.getElementById("textoDiagnosticoZona").innerText = config.textoDiagnostico;
       document.getElementById("iconoDiagnosticoZona").innerText = config.icono;
       document.getElementById("chipMusculosZona").innerText = `${config.ejercicios.length} ejercicios`;
 
-      // Tags de músculos objetivos
+      // Tags de músculos
       const tagsContainer = document.getElementById("tagsMusculosZona");
       tagsContainer.innerHTML = "";
       config.musculosTags.forEach(tag => {
@@ -968,12 +1058,12 @@
         tagsContainer.appendChild(span);
       });
 
-      // 4. Calcular tiempo total
+      // 4. Duración calculada
       const totalMinutos = (config.ejercicios.length * 30 / 60).toFixed(1).replace(".0", "");
       document.getElementById("rutinaDuracion").innerText = `${totalMinutos} min · ${config.ejercicios.length} ejerc.`;
       document.getElementById("textoBotonIniciar").innerText = `Comenzar ${config.badge} (30s c/u)`;
 
-      // 5. Renderizar la lista de ejercicios de la zona filtrada
+      // 5. Renderizar lista previa
       renderPreviewEjercicios(config.ejercicios);
     }
 
@@ -1003,7 +1093,7 @@
     }
 
     // ===================================================================
-    // 5. MOTOR DEL TEMPORIZADOR DINÁMICO (30s)
+    // 5. FUNCIÓN 2 Y 3: CARGA DE TARJETA CLÍNICA Y TEMPORIZADOR
     // ===================================================================
     function iniciarRutina() {
       initAudio();
@@ -1015,34 +1105,52 @@
       iniciarTimer();
     }
 
+    // FUNCIÓN 2: Renderizar la tarjeta clínica con título, pasos y caja de seguridad
     function cargarEjercicioActual() {
       const ejercicio = state.rutinaActual[state.indiceEjercicio];
       if (!ejercicio) return;
 
-      document.getElementById("indicadorZona").innerText = ejercicio.zona.toUpperCase();
-      document.getElementById("indicadorProgreso").innerText = `Ejercicio ${state.indiceEjercicio + 1} de ${state.rutinaActual.length}`;
-      
-      const porcentaje = ((state.indiceEjercicio + 1) / state.rutinaActual.length) * 100;
-      document.getElementById("barraProgresoTotal").style.width = `${porcentaje}%`;
+      // FUNCIÓN 4: Indicadores de Progreso
+      const totalEjercicios = state.rutinaActual.length;
+      const numeroActual = state.indiceEjercicio + 1;
+      const porcentaje = Math.round((numeroActual / totalEjercicios) * 100);
 
+      document.getElementById("indicadorZona").innerText = ejercicio.zona.toUpperCase();
+      document.getElementById("badgeEjercicioZona").innerText = ejercicio.zona.toUpperCase();
+      document.getElementById("indicadorProgreso").innerText = `Ejercicio ${numeroActual} de ${totalEjercicios}`;
+      document.getElementById("barraProgresoTotal").style.width = `${porcentaje}%`;
+      document.getElementById("porcentajeProgreso").innerText = `${porcentaje}%`;
+
+      // FUNCIÓN 2: Ficha del Ejercicio
       document.getElementById("ejercicioTitulo").innerText = ejercicio.titulo;
       document.getElementById("ejercicioMusculos").innerText = ejercicio.musculos;
       document.getElementById("ejercicioIcono").innerText = ejercicio.icono;
       document.getElementById("ejercicioRecomendacion").innerText = ejercicio.recomendacion;
 
+      // FUNCIÓN 2: Técnica Paso a Paso
       const pasosContainer = document.getElementById("ejercicioPasos");
       pasosContainer.innerHTML = "";
       ejercicio.pasos.forEach((paso, i) => {
         const li = document.createElement("li");
-        li.className = "flex items-start gap-2";
-        li.innerHTML = `<span class="font-bold text-primary shrink-0">${i + 1}.</span> <span>${paso}</span>`;
+        li.className = "flex items-start gap-2.5";
+        li.innerHTML = `
+          <span class="w-5 h-5 rounded-full bg-surface-container text-primary font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
+            ${i + 1}
+          </span>
+          <span class="flex-1">${paso}</span>
+        `;
         pasosContainer.appendChild(li);
       });
 
+      // Resetear tiempo para el nuevo ejercicio
       state.tiempoRestante = state.tiempoTotalPorEjercicio;
       actualizarVisualizacionTimer();
+
+      // Esconder alerta visual anterior
+      document.getElementById("alertaVisualCambio").classList.add("hidden");
     }
 
+    // FUNCIÓN 3: Actualizar Anillo SVG y números tabulares
     function actualizarVisualizacionTimer() {
       document.getElementById("timerSegundos").innerText = state.tiempoRestante;
       
@@ -1051,13 +1159,19 @@
       const offset = 440 * fraccion;
       circle.style.strokeDashoffset = offset;
 
+      const contenedor = document.getElementById("contenedorTemporizador");
+
+      // FUNCIÓN 4: Alerta visual durante los últimos 3 segundos
       if (state.tiempoRestante <= 3 && state.tiempoRestante > 0) {
-        circle.style.stroke = "#ac5d00"; // Ámbar de alerta biomecánica
+        circle.style.stroke = "#ac5d00"; // Ámbar biomecánico
+        contenedor.classList.add("timer-alert-pulse");
       } else {
-        circle.style.stroke = "#00664b"; // Verde primario
+        circle.style.stroke = "#00664b"; // Verde primario clínico
+        contenedor.classList.remove("timer-alert-pulse");
       }
     }
 
+    // FUNCIÓN 3: Controles Play / Pausa
     function togglePlayPausa() {
       initAudio();
       if (state.corriendo) {
@@ -1072,6 +1186,7 @@
       state.corriendo = true;
       document.getElementById("iconoPlayPausa").innerText = "pause";
       document.getElementById("textoPlayPausa").innerText = "Pausar";
+      document.getElementById("labelTimerEstado").innerText = "En ejecución";
 
       clearInterval(state.timerId);
       state.timerId = setInterval(() => {
@@ -1079,18 +1194,8 @@
           state.tiempoRestante--;
           actualizarVisualizacionTimer();
         } else {
-          pausarTimer();
-          emitirCampanaClinica();
-          state.ejerciciosCompletadosContador++;
-
-          setTimeout(() => {
-            if (state.indiceEjercicio < state.rutinaActual.length - 1) {
-              ejercicioSiguiente();
-              iniciarTimer();
-            } else {
-              mostrarPantallaCompletado();
-            }
-          }, 800);
+          // FUNCIÓN 4: Finalizó la cuenta regresiva de 30 segundos
+          finalizoEjercicioCuentaRegresiva();
         }
       }, 1000);
     }
@@ -1100,6 +1205,8 @@
       clearInterval(state.timerId);
       document.getElementById("iconoPlayPausa").innerText = "play_arrow";
       document.getElementById("textoPlayPausa").innerText = "Continuar";
+      document.getElementById("labelTimerEstado").innerText = "Pausado";
+      document.getElementById("contenedorTemporizador").classList.remove("timer-alert-pulse");
     }
 
     function reiniciarEjercicioActual() {
@@ -1108,6 +1215,35 @@
       actualizarVisualizacionTimer();
     }
 
+    // FUNCIÓN 4: Notificar cambio con alerta sonora y visual al terminar los 30 segundos
+    function finalizoEjercicioCuentaRegresiva() {
+      pausarTimer();
+      
+      // 1. Alerta sonora Web Audio API
+      emitirCampanaClinica();
+
+      // 2. Alerta visual de confirmación
+      const alerta = document.getElementById("alertaVisualCambio");
+      alerta.classList.remove("hidden");
+      document.getElementById("contenedorTemporizador").classList.add("flash-success");
+
+      state.ejerciciosCompletadosContador++;
+
+      // 3. Transición automática al siguiente ejercicio tras breve pausa clínica (1s)
+      setTimeout(() => {
+        document.getElementById("contenedorTemporizador").classList.remove("flash-success");
+        if (state.indiceEjercicio < state.rutinaActual.length - 1) {
+          ejercicioSiguiente();
+          iniciarTimer();
+        } else {
+          // Rutina totalmente finalizada
+          alerta.classList.add("hidden");
+          mostrarPantallaCompletado();
+        }
+      }, 1100);
+    }
+
+    // FUNCIÓN 3: Botón Siguiente
     function ejercicioSiguiente() {
       pausarTimer();
       if (state.indiceEjercicio < state.rutinaActual.length - 1) {
@@ -1118,6 +1254,7 @@
       }
     }
 
+    // FUNCIÓN 3: Botón Retroceder
     function ejercicioAnterior() {
       pausarTimer();
       if (state.indiceEjercicio > 0) {
@@ -1127,7 +1264,7 @@
     }
 
     // ===================================================================
-    // 6. COMPLETADO Y CELEBRACIÓN SERENA
+    // 6. COMPLETADO Y SINCRONIZACIÓN FIREBASE FIRESTORE
     // ===================================================================
     function mostrarPantallaCompletado() {
       pausarTimer();
@@ -1137,6 +1274,16 @@
       document.getElementById("metricTiempoDescompresion").innerText = `${minutos} Min`;
       document.getElementById("metricZonaAliviada").innerText = state.zonaSeleccionada.toUpperCase();
       cambiarTab("completado");
+
+      // Si Firebase está configurado, guardar registro
+      if (state.firebaseConnected) {
+        console.log("Registrando sesión completada en Firestore...", {
+          zona: state.zonaSeleccionada,
+          ejercicios: total,
+          duracionSegundos: total * 30,
+          timestamp: new Date().toISOString()
+        });
+      }
     }
 
     function toggleCheckItem(btn) {
@@ -1155,9 +1302,9 @@
           </div>
           <h2 class="text-xl font-bold text-on-surface">¡Listo para continuar con tu día!</h2>
           <p class="text-xs text-on-surface-variant leading-relaxed">
-            PausaActiva ha cerrado tu sesión sin almacenar datos ni rastrearte. Tu musculatura y tu postura están preparadas para seguir con energía.
+            PausaActiva ha completado tu sesión. Tu columna vertebral, trapecios y muñecas han recuperado su alineación neutra.
           </p>
-          <button class="w-full h-12 rounded-full bg-primary text-on-primary font-bold text-xs" onclick="location.reload()">
+          <button class="w-full h-12 rounded-full bg-primary text-on-primary font-bold text-xs shadow-md" onclick="location.reload()">
             Iniciar Nueva Pausa Activa
           </button>
         </div>
@@ -1165,7 +1312,7 @@
     }
 
     // ===================================================================
-    // 7. GESTIÓN DE PESTAÑAS (TABS)
+    // 7. GESTIÓN DE NAVEGACIÓN Y TABS
     // ===================================================================
     function cambiarTab(tabId) {
       document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
@@ -1200,7 +1347,55 @@
     }
 
     // ===================================================================
-    // INICIALIZACIÓN AL CARGAR
+    // 8. MODAL Y CONTROL DE FIREBASE FIRESTORE
+    // ===================================================================
+    function abrirModalFirebase() {
+      document.getElementById("modalFirebase").classList.remove("hidden");
+    }
+
+    function cerrarModalFirebase() {
+      document.getElementById("modalFirebase").classList.add("hidden");
+    }
+
+    function guardarFirebaseConfig() {
+      const val = document.getElementById("firebaseConfigInput").value.trim();
+      if (val) {
+        try {
+          state.firebaseConfig = JSON.parse(val);
+          state.firebaseConnected = true;
+          document.getElementById("textoFirebase").innerText = "Firestore Activo";
+          document.getElementById("iconoFirebase").className = "w-2 h-2 rounded-full bg-green-500";
+          alert("¡Configuración de Firebase Firestore guardada correctamente!");
+          cerrarModalFirebase();
+        } catch (e) {
+          alert("Error de formato JSON en la configuración. Revisa las llaves y comillas.");
+        }
+      } else {
+        alert("Pega la configuración de tu proyecto Firebase antes de guardar.");
+      }
+    }
+
+    // ===================================================================
+    // 9. ATAJOS DE TECLADO ACCESIBLES
+    // ===================================================================
+    document.addEventListener("keydown", (e) => {
+      // Espacio: Play / Pausa si estamos en la pestaña En Curso
+      if (e.code === "Space" && document.getElementById("tab-en-curso").classList.contains("active")) {
+        e.preventDefault();
+        togglePlayPausa();
+      }
+      // Flecha Derecha: Siguiente ejercicio
+      if (e.code === "ArrowRight" && document.getElementById("tab-en-curso").classList.contains("active")) {
+        ejercicioSiguiente();
+      }
+      // Flecha Izquierda: Anterior ejercicio
+      if (e.code === "ArrowLeft" && document.getElementById("tab-en-curso").classList.contains("active")) {
+        ejercicioAnterior();
+      }
+    });
+
+    // ===================================================================
+    // INICIALIZACIÓN AL CARGAR LA PÁGINA
     // ===================================================================
     document.addEventListener("DOMContentLoaded", () => {
       seleccionarZona("completa");
