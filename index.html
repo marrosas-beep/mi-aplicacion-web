@@ -2194,6 +2194,12 @@
       if (!raw || !raw.trim()) throw new Error("Por favor pega tus credenciales de Firebase.");
       raw = raw.trim();
 
+      // Detección amigable si el usuario escribió una zona del cuerpo o texto descriptivo
+      const textoLower = raw.toLowerCase();
+      if (!raw.includes("{") && (textoLower.includes("columna") || textoLower.includes("espalda") || textoLower.includes("cuello") || textoLower.includes("dolor") || textoLower.includes("mano") || textoLower.includes("hombro") || textoLower.includes("brazo") || textoLower.includes("lumbar"))) {
+        throw new Error("Escribiste una zona del cuerpo ('" + raw + "').\n\nEsta ventana NO es para ingresar la parte del cuerpo que te duele, sino para conectar una base de datos de Google Firebase en la nube.\n\n👉 Para aliviar tu columna o espalda: cierra esta ventana (clic en la 'X' o en 'Usar Solo Local') y en la pantalla principal presiona el botón 'Espalda / Lumbar' o ve a tu Perfil 👤.");
+      }
+
       // Si viene envuelto en const/var/let firebaseConfig = { ... }
       const matchObj = raw.match(/\{[\s\S]*\}/);
       if (matchObj) {
@@ -2221,7 +2227,7 @@
         return config;
       }
 
-      throw new Error("No se pudo interpretar el formato. Asegúrate de incluir 'apiKey' y 'projectId'.");
+      throw new Error("Las credenciales deben ser el bloque de código de Firebase que entrega Google (que contiene 'apiKey' y 'projectId').\n\nSi no tienes una cuenta de Firebase, ¡no te preocupes! Haz clic en 'Usar Solo Local' y la app guardará todas tus rutinas en tu navegador de forma automática.");
     }
 
     function inicializarFirebaseInstancia(config) {
