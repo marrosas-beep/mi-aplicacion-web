@@ -14,6 +14,10 @@
 
   <!-- Tailwind CSS CDN con configuración oficial (Rojo Clínico en lugar de Azul) -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Firebase App & Firestore Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -1043,10 +1047,10 @@
   </div>
 
   <!-- =================================================================== -->
-  <!-- MODAL 3: INTEGRACIÓN FIRESTORE (COHERENTE CON CONEXIÓN REAL)       -->
+  <!-- MODAL 3: INTEGRACIÓN FIRESTORE (GUÍA PASO A PASO Y CONEXIÓN REAL)   -->
   <!-- =================================================================== -->
   <div id="modalFirebase" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl border border-surface-container space-y-4">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-lg w-full shadow-2xl border border-surface-container space-y-4 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-secondary text-[24px]">database</span>
@@ -1058,28 +1062,53 @@
       </div>
 
       <!-- Estado Real Actual -->
-      <div class="p-3 rounded-2xl bg-surface-container-low border border-surface-container text-xs space-y-1">
+      <div class="p-3.5 rounded-2xl bg-surface-container-low border border-surface-container text-xs space-y-1">
         <div class="flex items-center justify-between">
           <span class="font-bold text-on-surface">Estado de Conexión:</span>
-          <span id="modalEstadoFirestorePill" class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-bold">Desconectado (Modo Local Activo)</span>
+          <span id="modalEstadoFirestorePill" class="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-bold">Desconectado (Modo Local Activo)</span>
         </div>
         <p class="text-[11px] text-on-surface-variant leading-relaxed">
-          PausaActiva guarda actualmente todas tus sesiones, perfil y recordatorios de forma 100% privada y persistente en <strong>localStorage</strong> de tu navegador.
+          PausaActiva funciona sin conexión de forma 100% privada y persistente en el <strong>localStorage</strong> de tu navegador.
         </p>
       </div>
 
-      <p class="text-xs text-on-surface-variant leading-relaxed">
-        Si deseas sincronizar con la nube (Firestore para el profesor o empresa), pega aquí las credenciales de Firebase en formato JSON:
-      </p>
+      <!-- Guía Rápida Paso a Paso -->
+      <div class="p-3.5 rounded-2xl bg-secondary-container/20 border border-secondary/20 text-xs space-y-2">
+        <span class="font-bold text-secondary block text-xs uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">help</span>
+          ¿Cómo conectar Firebase en 5 pasos sencillos?
+        </span>
+        <ol class="space-y-1.5 text-[11px] text-on-surface leading-relaxed list-decimal list-inside">
+          <li>Entra a <a href="https://console.firebase.google.com/" target="_blank" class="text-secondary font-bold underline">console.firebase.google.com</a> con tu cuenta Google.</li>
+          <li>Haz clic en <strong>"Crear un proyecto"</strong> (ej. nombre: <em>PausaActiva</em>).</li>
+          <li>En el menú ve a <strong>Compilación &gt; Firestore Database</strong> &gt; <strong>"Crear base de datos"</strong> y selecciona <em>"Iniciar en modo de prueba"</em> (para permitir guardar sin login).</li>
+          <li>Ve al engranaje ⚙️ (Configuración del proyecto) &gt; pestaña <strong>General</strong> &gt; baja a <strong>"Tus apps"</strong> &gt; haz clic en el ícono Web <strong>&lt;/&gt;</strong>.</li>
+          <li>Copia el bloque <code>const firebaseConfig = { ... };</code> y pégalo abajo (el sistema lo adapta automáticamente).</li>
+        </ol>
+      </div>
 
       <div class="space-y-1.5 text-xs">
-        <label class="block font-bold text-on-surface">Credenciales Firebase (opcional):</label>
-        <textarea id="firebaseConfigInput" rows="3" class="w-full p-2.5 rounded-xl border border-surface-container bg-surface-container-low font-mono text-[11px] text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary" placeholder='{ "apiKey": "...", "projectId": "tu-proyecto" }'></textarea>
+        <div class="flex items-center justify-between">
+          <label class="block font-bold text-on-surface">Pega aquí tus credenciales de Firebase:</label>
+          <button type="button" onclick="pegarEjemploFirebase()" class="text-[11px] font-bold text-secondary hover:underline flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">auto_fix_high</span>
+            Ver formato de ejemplo
+          </button>
+        </div>
+        <textarea id="firebaseConfigInput" rows="5" class="w-full p-2.5 rounded-xl border border-surface-container bg-surface-container-low font-mono text-[11px] text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary" placeholder='const firebaseConfig = {
+  apiKey: "AIzaSy...",
+  authDomain: "tu-proyecto.firebaseapp.com",
+  projectId: "tu-proyecto",
+  storageBucket: "tu-proyecto.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:12345:web:abcdef"
+};'></textarea>
       </div>
 
       <div class="flex gap-2 pt-1">
-        <button onclick="guardarFirebaseConfig()" class="flex-1 h-11 rounded-full bg-secondary text-on-secondary font-bold text-xs shadow-sm active:scale-95">
-          Conectar Firestore
+        <button onclick="guardarFirebaseConfig()" class="flex-1 h-11 rounded-full bg-secondary text-on-secondary font-bold text-xs shadow-sm active:scale-95 flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-[18px]">cloud_sync</span>
+          <span>Conectar Firestore</span>
         </button>
         <button onclick="usarModoLocalPuro()" class="h-11 px-3.5 rounded-full bg-surface-container text-on-surface font-semibold text-xs hover:bg-surface-container-high">
           Usar Solo Local
@@ -1835,6 +1864,29 @@
       if (state.historial.length > 25) state.historial.pop();
       localStorage.setItem('pausaactiva_historial', JSON.stringify(state.historial));
       renderHistorial();
+
+      // Sincronización en la Nube con Firestore (si está conectado)
+      if (state.firebaseConnected && window.dbFirestore) {
+        try {
+          window.dbFirestore.collection("historial_pausas").add({
+            zona: sesion.zona,
+            zonaNombre: sesion.zonaNombre,
+            ejerciciosTotal: sesion.ejerciciosTotal,
+            minutos: sesion.minutos,
+            fecha: sesion.fecha,
+            alivioEva: sesion.alivioEva || 3,
+            usuario: state.perfil?.nombre || "Camilo",
+            perfil: state.perfil,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          }).then(docRef => {
+            console.log("Sesión sincronizada en Firestore exitosamente:", docRef.id);
+          }).catch(err => {
+            console.warn("Aviso Firestore al escribir historial:", err);
+          });
+        } catch (e) {
+          console.warn("Excepción al enviar a Firestore:", e);
+        }
+      }
     }
 
     function renderHistorial() {
@@ -2127,7 +2179,7 @@
 
       if (state.firebaseConnected) {
         pill.className = "px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-bold";
-        pill.innerText = "Firestore: Conectado a la Nube";
+        pill.innerText = `Firestore: Conectado (${state.firebaseConfig?.projectId || 'Nube'})`;
         textoHeader.innerText = "Firestore Conectado";
         iconoHeader.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
       } else {
@@ -2138,29 +2190,116 @@
       }
     }
 
+    function parsearFirebaseConfig(raw) {
+      if (!raw || !raw.trim()) throw new Error("Por favor pega tus credenciales de Firebase.");
+      raw = raw.trim();
+
+      // Si viene envuelto en const/var/let firebaseConfig = { ... }
+      const matchObj = raw.match(/\{[\s\S]*\}/);
+      if (matchObj) {
+        raw = matchObj[0];
+      }
+
+      // 1. Intentar JSON estándar directo
+      try {
+        const obj = JSON.parse(raw);
+        if (obj && (obj.apiKey || obj.projectId)) return obj;
+      } catch (e) {}
+
+      // 2. Extraer claves estándar de Firebase mediante expresiones regulares
+      const config = {};
+      const claves = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'messagingSenderId', 'appId', 'measurementId'];
+      claves.forEach(clave => {
+        const reg = new RegExp(`['"]?${clave}['"]?\\s*:\\s*['"]([^'"]+)['"]`, 'i');
+        const match = raw.match(reg);
+        if (match && match[1]) {
+          config[clave] = match[1];
+        }
+      });
+
+      if (config.apiKey && config.projectId) {
+        return config;
+      }
+
+      throw new Error("No se pudo interpretar el formato. Asegúrate de incluir 'apiKey' y 'projectId'.");
+    }
+
+    function inicializarFirebaseInstancia(config) {
+      if (typeof firebase === 'undefined') {
+        console.warn("Firebase SDK no disponible aún.");
+        return false;
+      }
+      try {
+        if (firebase.apps && firebase.apps.length > 0) {
+          firebase.apps.forEach(app => app.delete().catch(() => {}));
+        }
+        firebase.initializeApp(config);
+        window.dbFirestore = firebase.firestore();
+        console.log("Firebase conectado exitosamente con proyecto:", config.projectId);
+
+        // Ping de prueba en la nube
+        window.dbFirestore.collection("conexion_test").doc("ping").set({
+          activo: true,
+          fecha: new Date().toISOString(),
+          proyecto: config.projectId,
+          app: "PausaActiva",
+          usuario: state.perfil?.nombre || "Camilo"
+        }).then(() => {
+          console.log("Ping Firestore completado.");
+        }).catch(err => {
+          console.warn("Aviso Firestore al escribir ping:", err);
+        });
+
+        return true;
+      } catch (err) {
+        console.error("Error al inicializar Firebase SDK:", err);
+        throw err;
+      }
+    }
+
+    function pegarEjemploFirebase() {
+      const ejemplo = `const firebaseConfig = {
+  apiKey: "AIzaSyD-TuApiKeyDeFirebaseAqui12345",
+  authDomain: "mi-pausa-activa.firebaseapp.com",
+  projectId: "mi-pausa-activa",
+  storageBucket: "mi-pausa-activa.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef123456789"
+};`;
+      document.getElementById("firebaseConfigInput").value = ejemplo;
+    }
+
     function guardarFirebaseConfig() {
       const val = document.getElementById("firebaseConfigInput").value.trim();
-      if (val) {
-        try {
-          state.firebaseConfig = JSON.parse(val);
-          state.firebaseConnected = true;
-          localStorage.setItem('pausaactiva_firebase_config', val);
-          actualizarEstadoModalFirebase();
-          alert("¡Credenciales de Firebase Firestore validadas y activas!");
-          cerrarModalFirebase();
-        } catch (e) {
-          alert("Error de formato JSON en las credenciales. Revisa que tenga comillas válidas.");
-        }
-      } else {
-        alert("Pega el JSON con la configuración de tu proyecto en Firebase.");
+      if (!val) {
+        alert("Pega tus credenciales de Firebase en el cuadro de texto.");
+        return;
+      }
+
+      try {
+        const config = parsearFirebaseConfig(val);
+        inicializarFirebaseInstancia(config);
+
+        state.firebaseConfig = config;
+        state.firebaseConnected = true;
+        localStorage.setItem('pausaactiva_firebase_config', JSON.stringify(config));
+        actualizarEstadoModalFirebase();
+
+        alert(`✅ ¡Conexión con Firestore exitosa!\n\nProyecto: ${config.projectId}\n\nLas pausas activas completadas ahora se sincronizarán en la colección "historial_pausas" en la nube.`);
+        cerrarModalFirebase();
+      } catch (e) {
+        alert("⚠️ " + (e.message || "Error al interpretar las credenciales de Firebase."));
       }
     }
 
     function usarModoLocalPuro() {
       state.firebaseConnected = false;
+      state.firebaseConfig = null;
+      window.dbFirestore = null;
       localStorage.removeItem('pausaactiva_firebase_config');
       actualizarEstadoModalFirebase();
       cerrarModalFirebase();
+      alert("PausaActiva configurada en Modo 100% Local (los datos se guardan en este dispositivo).");
     }
 
     // ===================================================================
@@ -2234,10 +2373,14 @@
       try {
         const f = localStorage.getItem('pausaactiva_firebase_config');
         if (f) {
-          state.firebaseConfig = JSON.parse(f);
+          const config = JSON.parse(f);
+          state.firebaseConfig = config;
           state.firebaseConnected = true;
+          inicializarFirebaseInstancia(config);
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn("Aviso al cargar credenciales previas de Firebase:", e);
+      }
 
       actualizarBannerPerfil();
       actualizarEstadoModalFirebase();

@@ -139,6 +139,39 @@ La aplicación se encuentra desplegada y lista para acceso desde cualquier celul
 
 ---
 
+## 🗄️ 6. Guía Rápida: Cómo Conectar Firebase Firestore Paso a Paso
+
+Si deseas que la app sincronice tus pausas activas en la nube (para que un docente, supervisor o fisioterapeuta las consulte en tiempo real):
+
+1. **Crear proyecto gratuito en Firebase:**
+   - Entra a [console.firebase.google.com](https://console.firebase.google.com/) con tu cuenta Google.
+   - Haz clic en **"Crear un proyecto"** (o "Agregar proyecto"), asígnale un nombre (ej. `PausaActiva`) y finaliza el asistente.
+2. **Crear la Base de Datos Cloud Firestore:**
+   - En el menú lateral izquierdo, ve a **Compilación &gt; Firestore Database**.
+   - Haz clic en **"Crear base de datos"**.
+   - Selecciona **"Iniciar en modo de prueba"** (permite leer y escribir sin autenticación obligatoria) y pulsa Siguiente.
+3. **Obtener las Credenciales:**
+   - En el panel de Firebase, haz clic en el engranaje ⚙️ (arriba a la izquierda) &gt; **Configuración del proyecto**.
+   - En la pestaña **General**, baja hasta **"Tus apps"** y haz clic en el ícono Web **`</>`**.
+   - Asigna un apodo a la app y verás un bloque de código similar a este:
+     ```javascript
+     const firebaseConfig = {
+       apiKey: "AIzaSy...",
+       authDomain: "tu-proyecto.firebaseapp.com",
+       projectId: "tu-proyecto",
+       storageBucket: "tu-proyecto.appspot.com",
+       messagingSenderId: "123456789",
+       appId: "1:12345:web:abcdef"
+     };
+     ```
+4. **Conectar en la Aplicación:**
+   - En **PausaActiva**, pulsa el botón de la cabecera **"Modo Local (Offline)"**.
+   - Pega ese bloque de código tal cual en el cuadro de texto.
+   - Haz clic en **"Conectar Firestore"**.
+   - Verás la confirmación inmediata y la cabecera pasará a **"Firestore Conectado"** (con luz verde). A partir de ese momento, cada pausa completada se guardará en tu base de datos en la colección `historial_pausas`.
+
+---
+
 ## 📄 Créditos y Licencia
 Desarrollado como proyecto clínico y ergonómico interactivo.  
 Repositorio oficial: [marrosas-beep/mi-aplicacion-web](https://github.com/marrosas-beep/mi-aplicacion-web).  
