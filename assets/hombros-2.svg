@@ -1,61 +1,72 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="100%" height="100%">
   <defs>
     <linearGradient id="bgGradH2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#edfdf4"/>
-      <stop offset="100%" stop-color="#e1f2e8"/>
+      <stop offset="0%" stop-color="#fef2f2"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
     </linearGradient>
     <filter id="shadowH2" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#101e19" flood-opacity="0.08"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#7f1d1d" flood-opacity="0.12"/>
     </filter>
   </defs>
 
+  <style>
+    @keyframes animShoulderShrug {
+      0%, 100% { transform: translateY(0px); }
+      40%, 65% { transform: translateY(-16px); }
+      75% { transform: translateY(2px); }
+    }
+    .shoulders-shrug {
+      animation: animShoulderShrug 4s ease-in-out infinite;
+    }
+  </style>
+
   <rect width="320" height="200" rx="16" fill="url(#bgGradH2)"/>
-  
-  <!-- Guía horizontal del brazo extendido -->
-  <line x1="50" y1="110" x2="270" y2="110" stroke="#bec9c2" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
 
-  <!-- Brazo extendido hacia la derecha a 90 grados -->
-  <!-- Hombro -->
-  <circle cx="65" cy="110" r="14" fill="#25332d"/>
-  <!-- Brazo y Antebrazo extendido horizontal -->
-  <path d="M75 110 L210 110" stroke="#25332d" stroke-width="16" stroke-linecap="round"/>
+  <!-- Línea base de reposo de hombros -->
+  <line x1="80" y1="120" x2="240" y2="120" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.6"/>
+  <text x="50" y="123" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" fill="#991b1b">Reposo</text>
 
-  <!-- Codo en extensión completa sin hiperextensión -->
-  <circle cx="140" cy="110" r="6" fill="#386286"/>
+  <!-- Tronco erguido -->
+  <path d="M125 155 C125 105 135 90 160 90 C185 90 195 105 195 155 Z" fill="#450a0a"/>
 
-  <!-- Trayecto del nervio mediano / flexores en verde terapéutico -->
-  <line x1="145" y1="110" x2="205" y2="110" stroke="#00664b" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="175" cy="110" r="2.5" fill="#85d7b5"/>
+  <!-- Cuello centrado -->
+  <rect x="151" y="70" width="18" height="25" rx="3" fill="#1c1917"/>
+  <!-- Cabeza erguida frontal -->
+  <ellipse cx="160" cy="52" rx="18" ry="22" fill="#1c1917" filter="url(#shadowH2)"/>
 
-  <!-- Muñeca en extensión con palma mirando al frente y dedos hacia arriba -->
-  <path d="M210 110 Q215 108 218 95 L224 55" stroke="#101e19" stroke-width="12" stroke-linecap="round"/>
+  <!-- Hombros animados: suben hacia las orejas y bajan de golpe -->
+  <g class="shoulders-shrug">
+    <!-- Hombro Izquierdo -->
+    <ellipse cx="120" cy="105" rx="15" ry="12" fill="#dc2626"/>
+    <path d="M120 105 L105 145" stroke="#450a0a" stroke-width="8" stroke-linecap="round"/>
 
-  <!-- Palma abierta y dedos rectos hacia arriba -->
-  <path d="M224 55 L227 42" stroke="#101e19" stroke-width="10" stroke-linecap="round"/>
-
-  <!-- Mano contralateral asistiendo (tirando suavemente los dedos hacia el cuerpo) -->
-  <g transform="translate(235, 40)" filter="url(#shadowH2)">
-    <!-- Dedos de la otra mano envolviendo los dedos estirados -->
-    <path d="M-5 8 Q12 10 10 28" fill="none" stroke="#2a7f62" stroke-width="6" stroke-linecap="round"/>
-    <circle cx="10" cy="30" r="5" fill="#00664b"/>
+    <!-- Hombro Derecho -->
+    <ellipse cx="200" cy="105" rx="15" ry="12" fill="#dc2626"/>
+    <path d="M200 105 L215 145" stroke="#450a0a" stroke-width="8" stroke-linecap="round"/>
   </g>
 
-  <!-- Flecha de tracción suave hacia el cuerpo (atrás) -->
-  <g transform="translate(200, 32)">
-    <line x1="32" y1="0" x2="6" y2="0" stroke="#ac5d00" stroke-width="2.5" stroke-linecap="round"/>
-    <polygon points="6,-4 0,0 6,4" fill="#ac5d00"/>
-    <text x="18" y="-7" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#ac5d00" text-anchor="middle">Hacia el cuerpo</text>
+  <!-- Flechas duales: Inhala arriba y suelta abajo -->
+  <g transform="translate(85, 78)">
+    <line x1="0" y1="35" x2="0" y2="5" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="-4,6 0,0 4,6" fill="#dc2626"/>
+    <text x="-8" y="20" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700" fill="#991b1b" text-anchor="end">1. Inhala</text>
+  </g>
+
+  <g transform="translate(235, 78)">
+    <line x1="0" y1="5" x2="0" y2="35" stroke="#991b1b" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="-4,34 0,40 4,34" fill="#991b1b"/>
+    <text x="8" y="20" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700" fill="#991b1b">2. Suelta</text>
   </g>
 
   <!-- Badges clínicos -->
-  <g transform="translate(18, 18)">
-    <rect width="136" height="24" rx="12" fill="#ffffff" opacity="0.95" filter="url(#shadowH2)"/>
-    <circle cx="14" cy="12" r="5" fill="#00664b"/>
-    <text x="25" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#00664b">Túnel Carpiano</text>
+  <g transform="translate(16, 16)">
+    <rect width="144" height="24" rx="12" fill="#ffffff" opacity="0.96" filter="url(#shadowH2)"/>
+    <circle cx="14" cy="12" r="5" fill="#dc2626"/>
+    <text x="25" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#991b1b">Descarga Escapular</text>
   </g>
 
   <g transform="translate(170, 162)">
-    <rect width="135" height="22" rx="11" fill="#00664b" opacity="0.95"/>
-    <text x="67" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="700" fill="#ffffff" text-anchor="middle">Codo 100% extendido</text>
+    <rect width="135" height="22" rx="11" fill="#dc2626" opacity="0.95"/>
+    <text x="67" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="700" fill="#ffffff" text-anchor="middle">Animación: Elevar y Soltar</text>
   </g>
 </svg>

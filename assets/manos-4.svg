@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradM4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef2f2"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </linearGradient>
+    <filter id="shadowM4" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#7f1d1d" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes animHandPump {
+      0%, 100% { transform: scale(0.92); }
+      50% { transform: scale(1.12); }
+    }
+    .hand-pump {
+      transform-origin: 160px 105px;
+      animation: animHandPump 2.5s ease-in-out infinite;
+    }
+  </style>
+
+  <rect width="320" height="200" rx="16" fill="url(#bgGradM4)"/>
+
+  <!-- Antebrazo vertical -->
+  <path d="M160 185 L160 130" stroke="#450a0a" stroke-width="20" stroke-linecap="round"/>
+
+  <!-- Mano en bombeo / apertura máxima animada -->
+  <g class="hand-pump">
+    <!-- Palma -->
+    <circle cx="160" cy="105" r="22" fill="#1c1917" filter="url(#shadowM4)"/>
+
+    <!-- Pulgar separado en abducción máxima -->
+    <path d="M145 115 Q125 115 118 95" stroke="#1c1917" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="118" cy="95" r="5" fill="#dc2626"/>
+
+    <!-- Índice -->
+    <path d="M152 90 L138 48" stroke="#1c1917" stroke-width="7.5" stroke-linecap="round"/>
+    <circle cx="138" cy="48" r="4.5" fill="#dc2626"/>
+
+    <!-- Medio -->
+    <path d="M160 85 L160 40" stroke="#1c1917" stroke-width="7.5" stroke-linecap="round"/>
+    <circle cx="160" cy="40" r="4.5" fill="#dc2626"/>
+
+    <!-- Anular -->
+    <path d="M168 90 L182 48" stroke="#1c1917" stroke-width="7.5" stroke-linecap="round"/>
+    <circle cx="182" cy="48" r="4.5" fill="#dc2626"/>
+
+    <!-- Meñique -->
+    <path d="M175 100 Q195 100 202 70" stroke="#1c1917" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="202" cy="70" r="4.5" fill="#dc2626"/>
+
+    <!-- Ondas expansivas en rojo clínico -->
+    <circle cx="160" cy="105" r="42" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"/>
+  </g>
+
+  <!-- Badges clínicos -->
+  <g transform="translate(16, 16)">
+    <rect width="144" height="24" rx="12" fill="#ffffff" opacity="0.96" filter="url(#shadowM4)"/>
+    <circle cx="14" cy="12" r="5" fill="#dc2626"/>
+    <text x="25" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#991b1b">Bombeo Miofascial</text>
+  </g>
+
+  <g transform="translate(170, 162)">
+    <rect width="136" height="22" rx="11" fill="#dc2626" opacity="0.95"/>
+    <text x="68" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="700" fill="#ffffff" text-anchor="middle">Animación: Abrir y Cerrar</text>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradM2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef2f2"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </linearGradient>
+    <filter id="shadowM2" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#7f1d1d" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes animExtensorStretch {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(16deg); }
+    }
+    .extensor-stretch {
+      transform-origin: 215px 95px;
+      animation: animExtensorStretch 3s ease-in-out infinite;
+    }
+  </style>
+
+  <rect width="320" height="200" rx="16" fill="url(#bgGradM2)"/>
+  
+  <!-- Guía horizontal -->
+  <line x1="50" y1="95" x2="270" y2="95" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"/>
+
+  <!-- Antebrazo extendido con dorso hacia arriba -->
+  <circle cx="65" cy="95" r="14" fill="#450a0a"/>
+  <path d="M75 95 L215 95" stroke="#450a0a" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- Codo (epicóndilo lateral) en rojo de prevención -->
+  <circle cx="140" cy="95" r="7" fill="#dc2626"/>
+  <line x1="145" y1="90" x2="210" y2="90" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Mano flexionada hacia abajo (dorso estirado) con animación -->
+  <g class="extensor-stretch">
+    <!-- Muñeca y dedos hacia abajo -->
+    <path d="M215 95 Q218 98 220 108 L226 155" stroke="#1c1917" stroke-width="13" stroke-linecap="round"/>
+    
+    <!-- Mano contralateral presionando el dorso hacia el cuerpo -->
+    <g transform="translate(235, 120)" filter="url(#shadowM2)">
+      <path d="M-6 4 Q14 8 10 26" fill="none" stroke="#dc2626" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="10" cy="26" r="5" fill="#991b1b"/>
+    </g>
+
+    <!-- Flecha hacia adentro/abajo -->
+    <line x1="250" y1="135" x2="228" y2="135" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="228,131 222,135 228,139" fill="#dc2626"/>
+  </g>
+
+  <!-- Badges clínicos -->
+  <g transform="translate(16, 16)">
+    <rect width="148" height="24" rx="12" fill="#ffffff" opacity="0.96" filter="url(#shadowM2)"/>
+    <circle cx="14" cy="12" r="5" fill="#dc2626"/>
+    <text x="25" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#991b1b">Extensores (Anti-Epicondilitis)</text>
+  </g>
+
+  <g transform="translate(168, 162)">
+    <rect width="138" height="22" rx="11" fill="#dc2626" opacity="0.95"/>
+    <text x="69" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="700" fill="#ffffff" text-anchor="middle">Animación: Dorso Abajo</text>
+  </g>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradM1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef2f2"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </linearGradient>
+    <filter id="shadowM1" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#7f1d1d" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes animWristStretch {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-14deg); }
+    }
+    .wrist-stretch {
+      transform-origin: 215px 110px;
+      animation: animWristStretch 3s ease-in-out infinite;
+    }
+  </style>
+
+  <rect width="320" height="200" rx="16" fill="url(#bgGradM1)"/>
+  
+  <!-- Guía horizontal del antebrazo -->
+  <line x1="50" y1="110" x2="270" y2="110" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"/>
+
+  <!-- Hombro y Antebrazo extendido horizontal -->
+  <circle cx="65" cy="110" r="14" fill="#450a0a"/>
+  <path d="M75 110 L215 110" stroke="#450a0a" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- Codo en extensión -->
+  <circle cx="140" cy="110" r="6" fill="#dc2626"/>
+
+  <!-- Trayecto del túnel carpiano / flexores en rojo clínico -->
+  <line x1="145" y1="110" x2="210" y2="110" stroke="#dc2626" stroke-width="5.5" stroke-linecap="round"/>
+  <circle cx="180" cy="110" r="3" fill="#fca5a5"/>
+
+  <!-- Muñeca en extensión con dedos animados y mano contraria asistiendo -->
+  <g class="wrist-stretch">
+    <!-- Palma y dedos hacia arriba -->
+    <path d="M215 110 Q218 106 220 95 L226 50" stroke="#1c1917" stroke-width="13" stroke-linecap="round"/>
+    
+    <!-- Mano contralateral tirando hacia atrás suavemente -->
+    <g transform="translate(236, 42)" filter="url(#shadowM1)">
+      <path d="M-6 6 Q14 10 10 30" fill="none" stroke="#dc2626" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="10" cy="30" r="5" fill="#991b1b"/>
+    </g>
+
+    <!-- Flecha de tracción hacia el cuerpo -->
+    <line x1="250" y1="35" x2="228" y2="35" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="228,31 222,35 228,39" fill="#dc2626"/>
+  </g>
+
+  <!-- Badges clínicos -->
+  <g transform="translate(16, 16)">
+    <rect width="144" height="24" rx="12" fill="#ffffff" opacity="0.96" filter="url(#shadowM1)"/>
+    <circle cx="14" cy="12" r="5" fill="#dc2626"/>
+    <text x="25" y="16" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#991b1b">Túnel Carpiano (Flexores)</text>
+  </g>
+
+  <g transform="translate(168, 162)">
+    <rect width="138" height="22" rx="11" fill="#dc2626" opacity="0.95"/>
+    <text x="69" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="700" fill="#ffffff" text-anchor="middle">Animación: Palma al Frente</text>
+  </g>
+</svg>
